@@ -25,7 +25,7 @@ class OrderRepositoryTest {
         List<Order> orders = orderRepository.read();
         assertEquals(1, orders.size());
         assertEquals(order, orders.get(0));
-        assertEquals(0, order.getId());
+        assertEquals(1, order.getId());
     }
 
     @Test

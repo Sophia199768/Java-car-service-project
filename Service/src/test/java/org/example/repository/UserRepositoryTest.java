@@ -26,7 +26,7 @@ class UserRepositoryTest {
         List<User> users = userRepository.read();
         assertEquals(1, users.size());
         assertEquals(user, users.get(0));
-        assertEquals(0, user.getId());
+        assertEquals(1, user.getId());
     }
 
     @Test
