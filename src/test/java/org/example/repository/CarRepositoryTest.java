@@ -67,6 +67,7 @@ class CarRepositoryTest {
 
         car = carRepository.create(car);
 
+
         List<Car> cars = carRepository.read();
         assertEquals(2, cars.size());
         assertTrue(cars.contains(car));
