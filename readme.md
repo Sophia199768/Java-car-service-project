@@ -2,6 +2,7 @@
 Домашние задания по Y_lab
 
 1) Homework1 https://github.com/Sophia199768/Y_lab/pull/1
+2) Homework2 https://github.com/Sophia199768/Y_lab/pull/2
    ## Запуск
    1. Клонирование репозитория
    2. Запуск приложения из Main
