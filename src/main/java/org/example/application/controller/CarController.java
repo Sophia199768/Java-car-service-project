@@ -43,7 +43,7 @@ public class CarController {
      *
      * @param car the request containing the details of the car to create
      */
-    public void createNewCar(CreateCarRequest car) {
+    public void createNewCar(CreateCarRequest car) throws Exceptions {
         carService.createCar(car);
     }
 
@@ -51,7 +51,7 @@ public class CarController {
      * Retrieves a list of all cars.
      * @return a list of all cars
      */
-    public List<ShowCarResponse> readCars() {
+    public List<ShowCarResponse> readCars() throws Exceptions {
         return carService.read();
     }
 
@@ -60,7 +60,7 @@ public class CarController {
      * @param request the request containing the filter criteria
      * @return a list of cars that match the filter criteria
      */
-    public List<ShowCarResponse> getFilterCars(FilterCarRequest request) {
+    public List<ShowCarResponse> getFilterCars(FilterCarRequest request) throws Exceptions {
         return carService.filter(request);
     }
 }

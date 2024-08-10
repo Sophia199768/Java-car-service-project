@@ -1,0 +1,65 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2
+      author: yourname
+      changes:
+        - insert:
+            tableName: cars
+            schemaName: objects
+            columns:
+              - column:
+                  name: car_brand
+                  value: Toyota
+              - column:
+                  name: car_model
+                  value: Camry
+              - column:
+                  name: release_year
+                  value: 2020-01-01
+              - column:
+                  name: condition
+                  value: New
+              - column:
+                  name: price
+                  value: 25000
+        - insert:
+            tableName: users
+            schemaName: objects
+            columns:
+              - column:
+                  name: login
+                  value: john.doe
+              - column:
+                  name: role
+                  value: CLIENT
+              - column:
+                  name: password
+                  value: password123
+              - column:
+                  name: name
+                  value: John Doe
+              - column:
+                  name: email
+                  value: john.doe@example.com
+              - column:
+                  name: phone
+                  value: +1234567890
+        - insert:
+            tableName: orders
+            schemaName: objects
+            columns:
+              - column:
+                  name: date
+                  value: 2022-01-01
+              - column:
+                  name: user_id
+                  value: 1
+              - column:
+                  name: car_id
+                  value: 1
+              - column:
+                  name: status
+                  value: Pending
+              - column:
+                  name: information
+                  value: Additional information

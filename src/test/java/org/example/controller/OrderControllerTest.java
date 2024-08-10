@@ -67,7 +67,7 @@ class OrderControllerTest {
 
     @Test
     @DisplayName("Should return all orders when requested")
-    void readAllOrders_shouldReturnAllOrders_whenRequested() {
+    void readAllOrders_shouldReturnAllOrders_whenRequested() throws Exceptions {
         List<ShowOrderResponse> expectedResponse = Collections.singletonList(new ShowOrderResponse());
         when(orderService.read()).thenReturn(expectedResponse);
 
@@ -79,7 +79,7 @@ class OrderControllerTest {
 
     @Test
     @DisplayName("Should return filtered orders when filter criteria are provided")
-    void getFilterOrders_shouldReturnFilteredOrders_whenFilterCriteriaAreProvided() {
+    void getFilterOrders_shouldReturnFilteredOrders_whenFilterCriteriaAreProvided() throws Exceptions {
         FilterOrderRequest request = new FilterOrderRequest();
         List<ShowOrderResponse> expectedResponse = Collections.singletonList(new ShowOrderResponse());
         when(orderService.filter(request)).thenReturn(expectedResponse);

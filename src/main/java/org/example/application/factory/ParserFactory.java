@@ -15,6 +15,8 @@ import org.example.service.service.CarService;
 import org.example.service.service.OrderService;
 import org.example.service.service.UserService;
 
+import java.sql.SQLException;
+
 public class ParserFactory {
     public static Parser createParser() {
         CarRepository carRepository = new CarRepository();

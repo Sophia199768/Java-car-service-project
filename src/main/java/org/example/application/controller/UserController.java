@@ -62,7 +62,7 @@ public class UserController {
      *
      * @return a list of all users
      */
-    public List<ShowUserResponse> readAllUsers() {
+    public List<ShowUserResponse> readAllUsers() throws Exceptions {
         return userService.read();
     }
 
@@ -72,7 +72,7 @@ public class UserController {
      * @param request the request containing the filter criteria
      * @return a list of users that match the filter criteria
      */
-    public List<ShowUserResponse> getFilterUsers(FilterUserRequest request) {
+    public List<ShowUserResponse> getFilterUsers(FilterUserRequest request) throws Exceptions {
         return userService.filter(request);
     }
 }

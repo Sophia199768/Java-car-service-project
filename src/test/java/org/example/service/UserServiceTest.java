@@ -44,7 +44,7 @@ class UserServiceTest {
         User user = new User();
         when(userRepository.read()).thenReturn(Collections.emptyList());
         when(userMapper.toUser(request)).thenReturn(user);
-        doNothing().when(userRepository).create(user);
+
 
         userService.createUser(request);
 
@@ -53,7 +53,7 @@ class UserServiceTest {
 
     @Test
     @DisplayName("createUser should throw exception when login is already used")
-    void createUser_shouldThrowException_whenLoginIsUsed() {
+    void createUser_shouldThrowException_whenLoginIsUsed() throws Exceptions {
         CreateUserRequest request = new CreateUserRequest();
         request.setLogin("existingUser");
         User existingUser = new User();
@@ -79,7 +79,7 @@ class UserServiceTest {
 
     @Test
     @DisplayName("logIn should throw exception when login is invalid")
-    void logIn_shouldThrowException_whenLoginIsInvalid() {
+    void logIn_shouldThrowException_whenLoginIsInvalid() throws Exceptions {
         LogInRequest logInRequest = new LogInRequest();
         logInRequest.setLogin("nonExistentUser");
         when(userRepository.read()).thenReturn(Collections.emptyList());
@@ -105,7 +105,7 @@ class UserServiceTest {
 
     @Test
     @DisplayName("read should return list of users")
-    void read_shouldReturnListOfUsers() {
+    void read_shouldReturnListOfUsers() throws Exceptions {
         User user = new User();
         ShowUserResponse showUserResponse = new ShowUserResponse();
         when(userRepository.read()).thenReturn(Collections.singletonList(user));
@@ -133,7 +133,7 @@ class UserServiceTest {
 
     @Test
     @DisplayName("filter should return list of users based on filter criteria")
-    void filter_shouldReturnUsersBasedOnCriteria() {
+    void filter_shouldReturnUsersBasedOnCriteria() throws Exceptions {
         User user = User.builder()
                 .role(Role.CLIENT)
                 .login("userLogin")

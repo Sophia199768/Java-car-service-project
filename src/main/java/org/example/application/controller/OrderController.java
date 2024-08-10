@@ -52,7 +52,7 @@ public class OrderController {
      *
      * @return a list of all orders
      */
-    public List<ShowOrderResponse> readAllOrders() {
+    public List<ShowOrderResponse> readAllOrders() throws Exceptions {
         return orderService.read();
     }
 
@@ -62,7 +62,7 @@ public class OrderController {
      * @param request the request containing the filter criteria
      * @return a list of orders that match the filter criteria
      */
-    public List<ShowOrderResponse> getFilterOrders(FilterOrderRequest request) {
+    public List<ShowOrderResponse> getFilterOrders(FilterOrderRequest request) throws Exceptions {
         return orderService.filter(request);
     }
 }

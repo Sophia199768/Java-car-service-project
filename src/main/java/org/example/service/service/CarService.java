@@ -28,7 +28,7 @@ public class CarService {
      *
      * @param car The CarRequest object containing car details to be created.
      */
-    public void createCar(CreateCarRequest car) {
+    public void createCar(CreateCarRequest car) throws Exceptions {
         carRepository.create(mapper.toCar(car));
     }
 
@@ -41,14 +41,12 @@ public class CarService {
      */
     public void updateCar(UpdateCarRequest request) throws Exceptions {
         Car car = carRepository.read().stream().filter(it -> it.getId().equals(request.getId())).findFirst().orElse(null);
-        if (car == null) throw new Exceptions("There is no such car");
 
-        Car updatedCar = car.clone();
+        if (car == null) {
+            throw new Exceptions("There is no such car");
+        }
 
-        if (request.getCondition() != null) updatedCar.setCondition(request.getCondition());
-        if (request.getPrice() != null) updatedCar.setPrice(request.getPrice());
-
-        carRepository.update(updatedCar);
+        carRepository.update(car);
     }
 
 
@@ -68,7 +66,7 @@ public class CarService {
      *
      * @return A list of CarResponse objects representing all cars in the repository.
      */
-    public List<ShowCarResponse> read() {
+    public List<ShowCarResponse> read() throws Exceptions {
         List<Car> cars = carRepository.read();
 
         List<ShowCarResponse> showCarResponse = new ArrayList<>();
@@ -86,7 +84,7 @@ public class CarService {
      * @param request The FilterCarRequest where information is written what we need to filter.
      * @return A list of ShowCarResponse objects that match the filter criteria.
      */
-    public List<ShowCarResponse> filter(FilterCarRequest request) {
+    public List<ShowCarResponse> filter(FilterCarRequest request) throws Exceptions {
         List<Car> answer = carRepository.read();
 
         if (request.getCarBrand() != null) {

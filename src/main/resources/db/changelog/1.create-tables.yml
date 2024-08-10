@@ -1,0 +1,101 @@
+databaseChangeLog:
+- changeSet:
+    id: 1
+    author: yourname
+    changes:
+      - sql:
+          sql: CREATE SCHEMA objects;
+
+      - createTable:
+          schemaName: objects
+          tableName: cars
+          columns:
+            - column:
+                name: car_id
+                type: INT
+                autoIncrement: true
+                constraints:
+                  primaryKey: true
+                  nullable: false
+            - column:
+                name: car_brand
+                type: VARCHAR(255)
+            - column:
+                name: car_model
+                type: VARCHAR(255)
+            - column:
+                name: release_year
+                type: TIMESTAMP WITHOUT TIME ZONE
+            - column:
+                name: condition
+                type: VARCHAR(255)
+            - column:
+                name: price
+                type: BIGINT
+
+      - createTable:
+          schemaName: objects
+          tableName: users
+          columns:
+            - column:
+                name: user_id
+                type: INT
+                autoIncrement: true
+                constraints:
+                  primaryKey: true
+                  nullable: false
+            - column:
+                name: login
+                type: VARCHAR(255)
+                constraints:
+                  nullable: false
+            - column:
+                name: role
+                type: VARCHAR(255)
+                constraints:
+                  nullable: false
+            - column:
+                name: password
+                type: VARCHAR(255)
+                constraints:
+                  nullable: false
+            - column:
+                name: name
+                type: VARCHAR(255)
+            - column:
+                name: email
+                type: VARCHAR(255)
+            - column:
+                name: phone
+                type: VARCHAR(255)
+
+      - createTable:
+          schemaName: objects
+          tableName: orders
+          columns:
+            - column:
+                name: order_id
+                type: INT
+                autoIncrement: true
+                constraints:
+                  primaryKey: true
+                  nullable: false
+            - column:
+                name: date
+                type: TIMESTAMP WITHOUT TIME ZONE
+            - column:
+                name: user_id
+                type: INT
+                constraints:
+                  nullable: false
+            - column:
+                name: car_id
+                type: INT
+                constraints:
+                  nullable: false
+            - column:
+                name: status
+                type: VARCHAR(255)
+            - column:
+                name: information
+                type: VARCHAR(255)

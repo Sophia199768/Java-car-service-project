@@ -46,7 +46,7 @@ class CarControllerTest {
 
     @Test
     @DisplayName("Should successfully create a new car when all details are correct")
-    void createNewCar_shouldBeSuccessful_whenAllDetailsAreCorrect() {
+    void createNewCar_shouldBeSuccessful_whenAllDetailsAreCorrect() throws Exceptions {
         CreateCarRequest createCarRequest = new CreateCarRequest();
         carController.createNewCar(createCarRequest);
 
@@ -57,7 +57,7 @@ class CarControllerTest {
 
     @Test
     @DisplayName("Should return all cars when readCars is called")
-    void readCars_shouldReturnAllCars_whenCalled() {
+    void readCars_shouldReturnAllCars_whenCalled() throws Exceptions {
         List<ShowCarResponse> expectedCars = List.of(new ShowCarResponse());
         when(carService.read()).thenReturn(expectedCars);
 
@@ -68,7 +68,7 @@ class CarControllerTest {
 
     @Test
     @DisplayName("Should return filtered cars when getFilterCars is called with valid filter")
-    void getFilterCars_shouldReturnFilteredCars_whenFilterIsValid() {
+    void getFilterCars_shouldReturnFilteredCars_whenFilterIsValid() throws Exceptions {
         FilterCarRequest request = new FilterCarRequest();
         List<ShowCarResponse> expectedCars = List.of(new ShowCarResponse());
         when(carService.filter(request)).thenReturn(expectedCars);
