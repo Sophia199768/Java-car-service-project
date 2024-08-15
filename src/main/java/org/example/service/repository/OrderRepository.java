@@ -4,6 +4,7 @@ package org.example.service.repository;
 
 import org.example.core.order.Order;
 import org.example.service.Exception.Exceptions;
+import org.example.service.sql.OrderSql;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -38,7 +39,7 @@ public class OrderRepository {
      * @param order The Order entity to be added.
      */
     public Order create(Order order) throws Exceptions {
-        String sql = "INSERT INTO objects.orders (date, user_id, car_id, status, information) VALUES (?, ?, ?, ?, ?)";
+        String sql = OrderSql.UPDATE_ORDER;
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setObject(1, order.getDate(), Types.TIMESTAMP);
             preparedStatement.setInt(2, order.getUserId());
@@ -70,7 +71,7 @@ public class OrderRepository {
      * @return An unmodifiable list of all Order entities.
      */
     public List<Order> read() throws Exceptions {
-        String sql = "SELECT * FROM objects.orders";
+        String sql = OrderSql.SELECT_ALL;
         List<Order> orders = new ArrayList<>();
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
            ResultSet resultSet = preparedStatement.executeQuery();
@@ -98,7 +99,7 @@ public class OrderRepository {
      * @param order The Order entity with updated information.
      */
     public void update(Order order) throws Exceptions {
-        String sql = "UPDATE objects.orders SET date = ?, user_id = ?, car_id = ?, status = ?, information = ?  WHERE order_id = ?";
+        String sql = OrderSql.UPDATE_ORDER;
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setObject(1, order.getDate(), Types.TIMESTAMP);
             preparedStatement.setInt(2, order.getUserId());
@@ -118,7 +119,7 @@ public class OrderRepository {
      * @param order The Order entity to be removed.
      */
     public void delete(Order order) throws Exceptions {
-        String sql = "DELETE FROM objects.orders WHERE order_id = ?";
+        String sql = OrderSql.DELETE_ORDER;
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, order.getId());
             preparedStatement.execute();

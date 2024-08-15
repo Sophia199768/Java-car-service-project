@@ -44,6 +44,7 @@ databaseChangeLog:
                 constraints:
                   primaryKey: true
                   nullable: false
+                remarks: "Primary key for the users table, uniquely identifies each user"
             - column:
                 name: login
                 type: VARCHAR(255)

@@ -3,6 +3,7 @@ package org.example.service.repository;
 
 import org.example.core.model.car.Car;
 import org.example.service.Exception.Exceptions;
+import org.example.service.sql.CarSql;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ public class CarRepository {
      * @param car The Car entity to be added.
      */
     public Car create(Car car) throws Exceptions {
-        String sql = "INSERT INTO objects.cars (car_brand, car_model, release_year, condition, price) VALUES (?, ?, ?, ?, ?)";
+        String sql = CarSql.INSERT_CAR;
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, car.getCarBrand());
             preparedStatement.setString(2, car.getCarModel());
@@ -69,7 +70,7 @@ public class CarRepository {
      * @param car The Car entity with updated information.
      */
     public void update(Car car) throws Exceptions {
-        String sql = "UPDATE objects.cars SET car_brand = ?, car_model = ?, release_year = ?, condition = ?, price = ? WHERE car_id = ?";
+        String sql = CarSql.UPDATE_CAR;
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, car.getCarBrand());
             preparedStatement.setString(2, car.getCarModel());
@@ -83,26 +84,36 @@ public class CarRepository {
         }
     }
 
+
+    /**
+     * build a Car entity to add in list
+     *
+     * @return Car
+     */
+    private Car buildCar(ResultSet resultSet) throws SQLException {
+        return Car.builder()
+                .id(resultSet.getInt("car_id"))
+                .carBrand(resultSet.getString("car_brand"))
+                .carModel(resultSet.getString("car_model"))
+                .releaseYear(resultSet.getDate("release_year"))
+                .condition(resultSet.getString("condition"))
+                .price(resultSet.getLong("price"))
+                .build();
+    }
+
     /**
      * Read all Car entities from the repository.
      *
      * @return An unmodifiable list of all Car entities.
      */
     public List<Car> read() throws Exceptions {
-        String sql = "SELECT * FROM objects.cars";
+        String sql = CarSql.SELECT_ALL;
         List<Car> cars = new ArrayList<>();
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                Car car = Car.builder()
-                        .id(resultSet.getInt("car_id"))
-                        .carBrand(resultSet.getString("car_brand"))
-                        .carModel(resultSet.getString("car_model"))
-                        .releaseYear(resultSet.getDate("release_year"))
-                        .condition(resultSet.getString("condition"))
-                        .price(resultSet.getLong("price"))
-                        .build();
+                Car car = buildCar(resultSet);
                 cars.add(car);
             }
 
@@ -118,7 +129,7 @@ public class CarRepository {
      * @param car The Car entity to be removed.
      */
     public void delete(Car car) throws Exceptions {
-        String sql = "DELETE FROM objects.cars WHERE car_id = ?";
+        String sql = CarSql.DELETE_CAR;
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, car.getId());
             preparedStatement.execute();

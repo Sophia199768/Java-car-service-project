@@ -5,6 +5,7 @@ package org.example.service.repository;
 import org.example.core.model.user.Role;
 import org.example.core.model.user.User;
 import org.example.service.Exception.Exceptions;
+import org.example.service.sql.UserSql;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ public class UserRepository {
      * @param user The User entity to be added.
      */
     public User create(User user) throws Exceptions {
-        String sql = "INSERT INTO objects.users (login, role, password, name, email, phone) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = UserSql.INSERT_USER;
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, user.getLogin());
             preparedStatement.setString(2, String.valueOf(user.getRole()));
@@ -69,7 +70,7 @@ public class UserRepository {
      * @return An unmodifiable list of all User entities.
      */
     public List<User> read() throws Exceptions {
-        String sql = "SELECT * FROM objects.users";
+        String sql = UserSql.SELECT_ALL;
         List<User> users = new ArrayList<>();
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -98,7 +99,7 @@ public class UserRepository {
      * @param user The User entity with updated information.
      */
     public void update(User user) throws Exceptions {
-        String sql = "UPDATE objects.users SET login = ? , role = ?, password = ?, name = ?, email = ?, phone = ?  WHERE user_id = ?";
+        String sql = UserSql.UPDATE_USER;
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, user.getLogin());
             preparedStatement.setString(2, String.valueOf(user.getRole()));
@@ -119,7 +120,7 @@ public class UserRepository {
      * @param user The User entity to be removed.
      */
     public void delete(User user) throws Exceptions {
-        String sql = "DELETE FROM objects.users WHERE user_id = ?";
+        String sql =  UserSql.DELETE_USER;
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, user.getId());
             preparedStatement.execute();
