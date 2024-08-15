@@ -1,0 +1,12 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=12345
+      - POSTGRES_DB=ylab_db
+      - POSTGRES_USER=Sophia
+    ports:
+      - "5432:5432"
+

@@ -44,7 +44,6 @@ class OrderServiceTest {
         CreateOrderRequest createOrderRequest = new CreateOrderRequest();
         Order order = new Order();
         when(orderMapper.toOrder(createOrderRequest)).thenReturn(order);
-        doNothing().when(orderRepository).create(order);
 
         orderService.createOrder(createOrderRequest);
 
@@ -81,7 +80,7 @@ class OrderServiceTest {
 
     @Test
     @DisplayName("read should return list of orders")
-    void read_shouldReturnListOfOrders() {
+    void read_shouldReturnListOfOrders() throws Exceptions {
         Order order = new Order();
         ShowOrderResponse showOrderResponse = new ShowOrderResponse();
         when(orderRepository.read()).thenReturn(Collections.singletonList(order));
@@ -96,7 +95,7 @@ class OrderServiceTest {
 
     @Test
     @DisplayName("filter should return list of orders based on filter criteria")
-    void filter_shouldReturnOrdersBasedOnCriteria() {
+    void filter_shouldReturnOrdersBasedOnCriteria() throws Exceptions {
         Order order = Order.builder()
                 .status("status")
                 .carId(1)

@@ -38,7 +38,6 @@ class UserControllerTest {
         doNothing().when(userService).createUser(request);
 
         userController.registration(request);
-
         verify(userService, times(1)).createUser(request);
     }
 
@@ -48,7 +47,6 @@ class UserControllerTest {
         LogInRequest logInRequest = new LogInRequest();
         User expectedResponse = User.builder().build();
         when(userService.logIn(logInRequest)).thenReturn(expectedResponse);
-
         User actualResponse = userController.logIn(logInRequest);
 
         assertEquals(expectedResponse, actualResponse);
@@ -62,13 +60,12 @@ class UserControllerTest {
         doNothing().when(userService).updateUser(request);
 
         userController.update(request);
-
         verify(userService, times(1)).updateUser(request);
     }
 
     @Test
     @DisplayName("Should return all users when requested")
-    void readAllUsers_shouldReturnAllUsers_whenRequested() {
+    void readAllUsers_shouldReturnAllUsers_whenRequested() throws Exceptions {
         List<ShowUserResponse> expectedResponse = Collections.singletonList(new ShowUserResponse());
         when(userService.read()).thenReturn(expectedResponse);
 
@@ -80,7 +77,8 @@ class UserControllerTest {
 
     @Test
     @DisplayName("Should return filtered users when filter criteria are provided")
-    void getFilterUsers_shouldReturnFilteredUsers_whenFilterCriteriaAreProvided() {
+    void getFilterUsers_shouldReturnFilteredUsers_whenFilterCriteriaAreProvided() throws Exceptions {
+
         FilterUserRequest request = new FilterUserRequest();
         List<ShowUserResponse> expectedResponse = Collections.singletonList(new ShowUserResponse());
         when(userService.filter(request)).thenReturn(expectedResponse);

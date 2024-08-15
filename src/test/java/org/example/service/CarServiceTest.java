@@ -40,11 +40,11 @@ class CarServiceTest {
 
     @Test
     @DisplayName("createCar should create car when request is valid")
-    void createCar_shouldCreateCar_whenRequestIsValid() {
+    void createCar_shouldCreateCar_whenRequestIsValid() throws Exceptions {
         CreateCarRequest createCarRequest = new CreateCarRequest();
         Car car = new Car();
         when(carMapper.toCar(createCarRequest)).thenReturn(car);
-        doNothing().when(carRepository).create(car);
+
 
         carService.createCar(createCarRequest);
 
@@ -82,7 +82,7 @@ class CarServiceTest {
 
     @Test
     @DisplayName("read should return list of cars")
-    void read_shouldReturnListOfCars() {
+    void read_shouldReturnListOfCars() throws Exceptions {
         Car car = new Car();
         ShowCarResponse showCarResponse = new ShowCarResponse();
         when(carRepository.read()).thenReturn(Collections.singletonList(car));
@@ -97,7 +97,7 @@ class CarServiceTest {
 
     @Test
     @DisplayName("filter should return list of cars based on filter criteria")
-    void filter_shouldReturnCarsBasedOnCriteria() {
+    void filter_shouldReturnCarsBasedOnCriteria() throws Exceptions {
         Car car = Car.builder()
                 .carBrand("Toyota")
                 .carModel("Camry")

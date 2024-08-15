@@ -68,16 +68,11 @@ public class UserService {
      */
     public void updateUser(UpdateUserRequest request) throws Exceptions {
         User user = userRepository.read().stream().filter(it -> it.getId().equals(request.getId())).findFirst().orElse(null);
-        if (user == null) throw new Exceptions("There is no such user");
+        if (user == null) {
+            throw new Exceptions("There is no such user");
+        }
 
-        User updatedUser = user.clone();
-
-        if (request.getName() != null)  updatedUser.setName(request.getName());
-        if (request.getRole() != null)  updatedUser.setRole(request.getRole());
-        if (request.getEmail() != null)  updatedUser.setEmail(request.getEmail());
-        if (request.getPhone() != null)  updatedUser.setPhone(request.getPhone());
-
-        userRepository.update(updatedUser);
+        userRepository.update(user);
     }
 
     /**
@@ -85,7 +80,7 @@ public class UserService {
      *
      * @return A list of UserResponse objects representing all users in the repository.
      */
-    public List<ShowUserResponse> read() {
+    public List<ShowUserResponse> read() throws Exceptions {
         List<User> users = userRepository.read();
 
         List<ShowUserResponse> usersResponses = new ArrayList<>();
@@ -111,7 +106,7 @@ public class UserService {
      * @param request The FilterUserRequest where information is written what we need to filter.
      * @return A list of ShowUserResponse objects that match the filter criteria.
      */
-    public List<ShowUserResponse> filter(FilterUserRequest request) {
+    public List<ShowUserResponse> filter(FilterUserRequest request) throws Exceptions {
         List<User> answer = userRepository.read();
 
         if (request.getEmail() != null) {

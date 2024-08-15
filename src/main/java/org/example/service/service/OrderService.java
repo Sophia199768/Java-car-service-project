@@ -45,15 +45,11 @@ public class OrderService {
      */
     public void updateOrder(UpdateOrderRequest request) throws Exceptions {
         Order order = orderRepository.read().stream().filter(it -> it.getId().equals(request.getId())).findFirst().orElse(null);
-        if (order == null) throw new Exceptions("There is no such order");
+        if (order == null) {
+            throw new Exceptions("There is no such order");
+        }
 
-        Order updatedOrder = order.clone();
-
-        if (request.getInformation() != null)  updatedOrder.setInformation(request.getInformation());
-        if (request.getStatus() != null)  updatedOrder.setStatus(request.getStatus());
-
-
-        orderRepository.update(updatedOrder);
+        orderRepository.update(order);
     }
 
     /**
@@ -61,7 +57,7 @@ public class OrderService {
      *
      * @return A list of OrderResponse objects representing all orders in the repository.
      */
-    public List<ShowOrderResponse> read() {
+    public List<ShowOrderResponse> read() throws Exceptions {
         List<Order> orders = orderRepository.read();
 
         List<ShowOrderResponse> ordersResponses = new ArrayList<>();
@@ -97,7 +93,7 @@ public class OrderService {
      * @param request The FilterOrderRequest where information is written what we need to filter.
      * @return A list of ShowOrderResponse objects that match the filter criteria.
      */
-    public List<ShowOrderResponse> filter(FilterOrderRequest request) {
+    public List<ShowOrderResponse> filter(FilterOrderRequest request) throws Exceptions {
         List<Order> answer = orderRepository.read();
 
         if (request.getDate() != null) {

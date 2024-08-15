@@ -4,7 +4,7 @@ package org.example.service.Exception;
 /**
  * Custom exception class for handling application-specific errors.
  */
-public class Exceptions extends java.lang.Exception {
+public class Exceptions extends Exception {
 
     /**
      * Constructs a new Exceptions with the specified detail message.
