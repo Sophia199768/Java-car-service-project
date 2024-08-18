@@ -75,15 +75,15 @@ public class UserRepository {
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                User user = User.builder()
-                        .id(resultSet.getInt("user_id"))
-                        .login(resultSet.getString("login"))
-                        .role(Role.valueOf(resultSet.getString("role")))
-                        .password(resultSet.getString("password"))
-                        .name(resultSet.getString("name"))
-                        .email(resultSet.getString("email"))
-                        .phone(resultSet.getString( "phone"))
-                        .build();
+                User user = new User();
+                user.setId(resultSet.getInt("user_id"));
+                user.setLogin(resultSet.getString("login"));
+                user.setRole(Role.valueOf(resultSet.getString("role")));
+                user.setPassword(resultSet.getString("password"));
+                user.setName(resultSet.getString("name"));
+                user.setEmail(resultSet.getString("email"));
+                user.setPhone(resultSet.getString( "phone"));
+
                 users.add(user);
             }
 

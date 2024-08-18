@@ -28,9 +28,6 @@ class UserServiceTest {
     @Mock
     private UserRepository userRepository;
 
-    @Mock
-    private UserMapper userMapper;
-
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -42,8 +39,8 @@ class UserServiceTest {
         CreateUserRequest request = new CreateUserRequest();
         request.setLogin("newUser");
         User user = new User();
+        user.setLogin("newUser");
         when(userRepository.read()).thenReturn(Collections.emptyList());
-        when(userMapper.toUser(request)).thenReturn(user);
 
 
         userService.createUser(request);
@@ -109,7 +106,6 @@ class UserServiceTest {
         User user = new User();
         ShowUserResponse showUserResponse = new ShowUserResponse();
         when(userRepository.read()).thenReturn(Collections.singletonList(user));
-        when(userMapper.toShowUserResponse(user)).thenReturn(showUserResponse);
 
         List<ShowUserResponse> showUserRespons = userService.read();
 
@@ -134,17 +130,18 @@ class UserServiceTest {
     @Test
     @DisplayName("filter should return list of users based on filter criteria")
     void filter_shouldReturnUsersBasedOnCriteria() throws Exceptions {
-        User user = User.builder()
-                .role(Role.CLIENT)
-                .login("userLogin")
-                .name("name")
-                .cars(null)
-                .build();
-        ShowUserResponse showUserResponse = new ShowUserResponse();
-        when(userRepository.read()).thenReturn(Collections.singletonList(user));
-        when(userMapper.toShowUserResponse(user)).thenReturn(showUserResponse);
+        User user = new User();
+        user.setRole(Role.CLIENT);
+        user.setLogin("userLogin");
+        user.setName("name");
 
-        List<ShowUserResponse> showUserRespons = userService.filter(new FilterUserRequest("name", null, null));
+        FilterUserRequest request = new FilterUserRequest();
+        request.setName("name");
+
+        ShowUserResponse showUserResponse = UserMapper.INSTANCE.toShowUserResponse(user);
+        when(userRepository.read()).thenReturn(Collections.singletonList(user));
+
+        List<ShowUserResponse> showUserRespons = userService.filter(request);
 
         assertEquals(1, showUserRespons.size());
         assertEquals(showUserResponse, showUserRespons.get(0));

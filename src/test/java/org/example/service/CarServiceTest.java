@@ -17,6 +17,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -30,9 +31,6 @@ class CarServiceTest {
     @Mock
     private CarRepository carRepository;
 
-    @Mock
-    private CarMapper carMapper;
-
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -43,8 +41,6 @@ class CarServiceTest {
     void createCar_shouldCreateCar_whenRequestIsValid() throws Exceptions {
         CreateCarRequest createCarRequest = new CreateCarRequest();
         Car car = new Car();
-        when(carMapper.toCar(createCarRequest)).thenReturn(car);
-
 
         carService.createCar(createCarRequest);
 
@@ -86,7 +82,6 @@ class CarServiceTest {
         Car car = new Car();
         ShowCarResponse showCarResponse = new ShowCarResponse();
         when(carRepository.read()).thenReturn(Collections.singletonList(car));
-        when(carMapper.toCarResponse(car)).thenReturn(showCarResponse);
 
         List<ShowCarResponse> showCarResponses = carService.read();
 
@@ -98,18 +93,24 @@ class CarServiceTest {
     @Test
     @DisplayName("filter should return list of cars based on filter criteria")
     void filter_shouldReturnCarsBasedOnCriteria() throws Exceptions {
-        Car car = Car.builder()
-                .carBrand("Toyota")
-                .carModel("Camry")
-                .condition("New")
-                .releaseYear(null)
-                .price(30000L)
-                .build();
-        ShowCarResponse showCarResponse = new ShowCarResponse();
-        when(carRepository.read()).thenReturn(List.of(car));
-        when(carMapper.toCarResponse(car)).thenReturn(showCarResponse);
+        Car car = new Car();
+        car.setId(1);
+        car.setCarBrand("Toyota");
+        car.setCarModel("Camry");
+        car.setPrice(30000L);
+        car.setCondition("New");
 
-        List<ShowCarResponse> showCarResponses = carService.filter(new FilterCarRequest("Toyota", "Camry", null, "New", 30000L));
+        FilterCarRequest request = new FilterCarRequest();
+        request.setCarBrand("Toyota");
+        request.setCarModel("Camry");
+        request.setCondition("New");
+        request.setPrice(30000L);
+
+        ShowCarResponse showCarResponse = CarMapper.INSTANCE.toCarResponse(car);
+
+        when(carRepository.read()).thenReturn(List.of(car));
+
+        List<ShowCarResponse> showCarResponses = carService.filter(request);
 
         assertEquals(1, showCarResponses.size());
         assertEquals(showCarResponse, showCarResponses.get(0));

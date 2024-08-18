@@ -1,6 +1,7 @@
 package org.example.service.service;
 
-import lombok.RequiredArgsConstructor;
+import org.example.annotations.Auditable;
+import org.example.annotations.Loggable;
 import org.example.core.model.car.Car;
 import org.example.core.responsesAndRequestes.car.CreateCarRequest;
 import org.example.core.responsesAndRequestes.car.FilterCarRequest;
@@ -18,10 +19,13 @@ import java.util.stream.Collectors;
 /**
  * The CarService class provides functionality for managing car data within the application.
  */
-@RequiredArgsConstructor
+@Loggable
 public class CarService {
     private final CarRepository carRepository;
-    private final CarMapper mapper;
+
+    public CarService(CarRepository carRepository) {
+        this.carRepository = carRepository;
+    }
 
     /**
      * Creates a new car entry in the repository based on the provided CarRequest.
@@ -29,7 +33,7 @@ public class CarService {
      * @param car The CarRequest object containing car details to be created.
      */
     public void createCar(CreateCarRequest car) throws Exceptions {
-        carRepository.create(mapper.toCar(car));
+        carRepository.create(CarMapper.INSTANCE.toCar(car));
     }
 
 
@@ -72,7 +76,7 @@ public class CarService {
         List<ShowCarResponse> showCarResponse = new ArrayList<>();
 
         for (Car car : cars) {
-            showCarResponse.add(mapper.toCarResponse(car));
+            showCarResponse.add(CarMapper.INSTANCE.toCarResponse(car));
         }
 
         return showCarResponse;
@@ -107,6 +111,6 @@ public class CarService {
             answer = answer.stream().filter(car -> car.getPrice().equals(request.getPrice())).toList();
         }
 
-        return answer.stream().map(mapper::toCarResponse).collect(Collectors.toList());
+        return answer.stream().map(CarMapper.INSTANCE::toCarResponse).collect(Collectors.toList());
     }
 }

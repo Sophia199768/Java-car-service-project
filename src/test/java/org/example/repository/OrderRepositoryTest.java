@@ -58,10 +58,10 @@ class OrderRepositoryTest {
     @Test
     @DisplayName("create should add a new order to the repository")
     void create_shouldAddNewOrderToRepository() throws Exceptions {
-        Order order = Order.builder()
-                .userId(1)
-                .carId(1)
-                .build();
+        Order order = new Order();
+        order.setCarId(1);
+        order.setUserId(1);
+
         orderRepository.create(order);
 
         List<Order> orders = orderRepository.read();
@@ -71,17 +71,15 @@ class OrderRepositoryTest {
     @Test
     @DisplayName("read should return all orders in the repository")
     void read_shouldReturnAllOrdersInRepository() throws Exceptions {
-        Order order1 = Order.builder()
-                .userId(1)
-                .carId(1)
-                .information("Order 1")
-                .build();
+        Order order1 = new Order();
+        order1.setCarId(1);
+        order1.setUserId(1);
+        order1.setInformation("Order 1");
 
-        Order order2 = Order.builder()
-                .userId(2)
-                .carId(2)
-                .information("Order 2")
-                .build();
+        Order order2 = new Order();
+        order2.setCarId(2);
+        order2.setUserId(2);
+        order2.setInformation("Order 2");
 
         orderRepository.create(order1);
         orderRepository.create(order2);
@@ -95,11 +93,10 @@ class OrderRepositoryTest {
     @Test
     @DisplayName("update should modify an existing order in the repository")
     void update_shouldModifyExistingOrderInRepository() throws Exceptions {
-        Order order = Order.builder()
-                .userId(1)
-                .carId(1)
-                .information("Initial Value")
-                .build();
+        Order order = new Order();
+        order.setCarId(1);
+        order.setUserId(1);
+        order.setInformation("Initial Value");
 
 
         order = orderRepository.create(order);
@@ -116,11 +113,10 @@ class OrderRepositoryTest {
     @Test
     @DisplayName("delete should remove an order from the repository")
     void delete_shouldRemoveOrderFromRepository() throws Exceptions {
-        Order order = Order.builder()
-                .userId(1)
-                .carId(1)
-                .information("Test Order")
-                .build();
+        Order order = new Order();
+        order.setCarId(1);
+        order.setUserId(1);
+        order.setInformation("Test Order");
 
         order = orderRepository.create(order);
 

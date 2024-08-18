@@ -15,16 +15,18 @@ class UserMapperTest {
     @Test
     @DisplayName("Should correctly map User to ShowUserResponse")
     void toShowUserResponse_shouldReturnCorrectShowUserResponse_whenUserIsProvided() {
-        UserMapper mapper = new UserMapper();
-        User newUser = User.builder()
-                .id(1)
-                .role(Role.ADMIN)
-                .login("NewLogin")
-                .password("NewPassword")
-                .build();
+        User newUser = new User();
+        newUser.setId(1);
+        newUser.setRole(Role.ADMIN);
+        newUser.setLogin("NewLogin");
+        newUser.setPassword("NewPassword");
 
-        ShowUserResponse expectedResponse = new ShowUserResponse(1, Role.ADMIN, "NewLogin", null, null, null);
-        ShowUserResponse actualResponse = mapper.toShowUserResponse(newUser);
+        ShowUserResponse expectedResponse = new ShowUserResponse();
+        expectedResponse.setId(1);
+        expectedResponse.setRole(Role.ADMIN);
+        expectedResponse.setLogin("NewLogin");
+
+        ShowUserResponse actualResponse = UserMapper.INSTANCE.toShowUserResponse(newUser);
 
         assertEquals(expectedResponse, actualResponse);
     }
@@ -32,16 +34,19 @@ class UserMapperTest {
     @Test
     @DisplayName("Should correctly map CreateUserRequest to User")
     void toUser_shouldReturnCorrectUser_whenCreateUserRequestIsProvided() {
-        UserMapper mapper = new UserMapper();
-        User expectedUser = User.builder()
-                .id(1)
-                .role(Role.ADMIN)
-                .login("NewLogin")
-                .password("NewPassword")
-                .build();
+        User expectedUser = new User();
+        expectedUser.setId(1);
+        expectedUser.setRole(Role.ADMIN);
+        expectedUser.setLogin("NewLogin");
+        expectedUser.setPassword("NewPassword");
 
-        CreateUserRequest request = new CreateUserRequest(Role.ADMIN, "NewLogin", "NewPassword", null, null, null);
-        User actualUser = mapper.toUser(request);
+
+        CreateUserRequest request = new CreateUserRequest();
+        request.setRole(Role.ADMIN);
+        request.setLogin("NewLogin");
+        request.setPassword("NewPassword");
+
+        User actualUser = UserMapper.INSTANCE.toUser(request);
         actualUser.setId(1);
 
         assertEquals(expectedUser, actualUser);

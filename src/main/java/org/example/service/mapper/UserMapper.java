@@ -1,43 +1,45 @@
 package org.example.service.mapper;
 
-
 import org.example.core.model.user.User;
 import org.example.core.responsesAndRequestes.user.CreateUserRequest;
 import org.example.core.responsesAndRequestes.user.ShowUserResponse;
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
 
 /**
- * The UserMapper class is responsible for mapping between User entities and their corresponding request and response objects
+ * Mapper interface for converting between {@link User} entities and their corresponding DTOs.
+ * <p>
+ * This interface uses MapStruct to generate implementations for mapping between:
+ * <ul>
+ *     <li>{@link User} and {@link ShowUserResponse}</li>
+ *     <li>{@link CreateUserRequest} and {@link User}</li>
+ * </ul>
+ * </p>
+ *
+ * <p>
+ * This interface provides a singleton instance via {@link #INSTANCE}.
+ * </p>
  */
-public class UserMapper {
+@Mapper
+public interface UserMapper {
+    /**
+     * Singleton instance of the {@link UserMapper}.
+     */
+    UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
     /**
-     * Converts a User entity to a UserResponse object
+     * Converts a {@link User} entity to a {@link ShowUserResponse} DTO.
      *
-     * @param user The User entity to be converted
-     * @return A UserResponse object containing the data from the User entity
+     * @param user the {@link User} entity to be converted
+     * @return the corresponding {@link ShowUserResponse} DTO
      */
-    public ShowUserResponse toShowUserResponse(User user) {
-        return new ShowUserResponse(user.getId(),
-                user.getRole(),
-                user.getLogin(),
-                user.getName(),
-                user.getPhone(),
-                user.getEmail());
-    }
+    ShowUserResponse toShowUserResponse(User user);
 
     /**
-     * Converts a UserRequest object to a User entity
+     * Converts a {@link CreateUserRequest} DTO to a {@link User} entity.
      *
-     * @param createUserRequest The UserRequest object to be converted
-     * @return A User entity containing the data from the UserRequest object
+     * @param createUserRequest the {@link CreateUserRequest} DTO to be converted
+     * @return the corresponding {@link User} entity
      */
-    public User toUser(CreateUserRequest createUserRequest) {
-        return User.builder()
-                .login(createUserRequest.getLogin())
-                .phone(createUserRequest.getPhone())
-                .role(createUserRequest.getRole())
-                .password(createUserRequest.getPassword())
-                .name(createUserRequest.getName())
-                .build();
-    }
+    User toUser(CreateUserRequest createUserRequest);
 }

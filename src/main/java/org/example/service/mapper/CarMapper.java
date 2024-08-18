@@ -1,38 +1,45 @@
 package org.example.service.mapper;
 
-
 import org.example.core.model.car.Car;
 import org.example.core.responsesAndRequestes.car.CreateCarRequest;
 import org.example.core.responsesAndRequestes.car.ShowCarResponse;
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
 
 /**
- * The CarMapper class is responsible for mapping between Car entities and their corresponding request and response objects
+ * Mapper interface for converting between {@link Car} entities and their corresponding DTOs.
+ * <p>
+ * This interface uses MapStruct to generate implementations for mapping between:
+ * <ul>
+ *     <li>{@link Car} and {@link ShowCarResponse}</li>
+ *     <li>{@link CreateCarRequest} and {@link Car}</li>
+ * </ul>
+ * </p>
+ *
+ * <p>
+ * This interface provides a singleton instance via {@link #INSTANCE}.
+ * </p>
  */
-public class CarMapper {
+@Mapper
+public interface CarMapper {
+    /**
+     * Singleton instance of the {@link CarMapper}.
+     */
+    CarMapper INSTANCE = Mappers.getMapper(CarMapper.class);
 
     /**
-     * Converts a Car entity to a CarResponse object
+     * Converts a {@link Car} entity to a {@link ShowCarResponse} DTO.
      *
-     * @param car The Car entity to be converted
-     * @return A CarResponse object containing the data from the Car entity
+     * @param car the {@link Car} entity to be converted
+     * @return the corresponding {@link ShowCarResponse} DTO
      */
-    public ShowCarResponse toCarResponse(Car car) {
-        return new ShowCarResponse(car.getId(), car.getCarBrand(), car.getCarModel(), car.getReleaseYear(), car.getCondition(), car.getPrice());
-    }
+    ShowCarResponse toCarResponse(Car car);
 
     /**
-     * Converts a CarRequest object to a Car entity
+     * Converts a {@link CreateCarRequest} DTO to a {@link Car} entity.
      *
-     * @param createCarRequest The CarRequest object to be converted
-     * @return A Car entity containing the data from the CarRequest object
+     * @param carRequest the {@link CreateCarRequest} DTO to be converted
+     * @return the corresponding {@link Car} entity
      */
-    public Car toCar(CreateCarRequest createCarRequest) {
-        return Car.builder()
-                .carBrand(createCarRequest.getCarBrand())
-                .carModel(createCarRequest.getCarModel())
-                .releaseYear(createCarRequest.getReleaseYear())
-                .condition(createCarRequest.getCondition())
-                .price(createCarRequest.getPrice())
-                .build();
-    }
+    Car toCar(CreateCarRequest carRequest);
 }
