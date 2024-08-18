@@ -9,4 +9,5 @@ public class Main {
 
         System.out.println(test.substring(4));
     }
+
 }
