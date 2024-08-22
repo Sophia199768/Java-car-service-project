@@ -1,6 +1,5 @@
 package org.example.service.service;
 
-import lombok.RequiredArgsConstructor;
 import org.example.core.model.user.User;
 import org.example.core.responsesAndRequestes.user.*;
 import org.example.service.Exception.Exceptions;
@@ -17,10 +16,12 @@ import java.util.stream.Collectors;
  * The UserService class provides functionality for managing users within the application.
  * It offers methods for user creation, login, role changes, and user retrieval, as well as filtering users based on criteria.
  */
-@RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
-    private final UserMapper mapper;
+
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     /**
      * Creates a new user based on the provided RegisterRequest.
@@ -38,7 +39,7 @@ public class UserService {
             }
         }
 
-        userRepository.create(mapper.toUser(request));
+        userRepository.create(UserMapper.INSTANCE.toUser(request));
     }
 
     /**
@@ -86,7 +87,7 @@ public class UserService {
         List<ShowUserResponse> usersResponses = new ArrayList<>();
 
         for (User user : users) {
-            usersResponses.add(mapper.toShowUserResponse(user));
+            usersResponses.add(UserMapper.INSTANCE.toShowUserResponse(user));
         }
 
         return usersResponses;
@@ -121,6 +122,6 @@ public class UserService {
             answer = answer.stream().filter(user -> user.getPhone().equals(request.getPhone())).toList();
         }
 
-        return answer.stream().map(mapper::toShowUserResponse).collect(Collectors.toList());
+        return answer.stream().map(UserMapper.INSTANCE::toShowUserResponse).collect(Collectors.toList());
     }
 }

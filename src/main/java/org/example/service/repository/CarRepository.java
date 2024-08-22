@@ -91,14 +91,14 @@ public class CarRepository {
      * @return Car
      */
     private Car buildCar(ResultSet resultSet) throws SQLException {
-        return Car.builder()
-                .id(resultSet.getInt("car_id"))
-                .carBrand(resultSet.getString("car_brand"))
-                .carModel(resultSet.getString("car_model"))
-                .releaseYear(resultSet.getDate("release_year"))
-                .condition(resultSet.getString("condition"))
-                .price(resultSet.getLong("price"))
-                .build();
+        Car car = new Car();
+        car.setId(resultSet.getInt("car_id"));
+        car.setCarBrand(resultSet.getString("car_brand"));
+        car.setCarModel(resultSet.getString("car_model"));
+        car.setReleaseYear(resultSet.getDate("release_year"));
+        car.setCondition(resultSet.getString("condition"));
+        car.setPrice(resultSet.getLong("price"));
+        return car;
     }
 
     /**

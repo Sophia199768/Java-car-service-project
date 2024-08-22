@@ -1,40 +1,45 @@
 package org.example.service.mapper;
 
-
 import org.example.core.order.Order;
 import org.example.core.responsesAndRequestes.order.CreateOrderRequest;
 import org.example.core.responsesAndRequestes.order.ShowOrderResponse;
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
 
 /**
- * The OrderMapper class is responsible for mapping between Order entities and their corresponding request and response objects
+ * Mapper interface for converting between {@link Order} entities and their corresponding DTOs.
+ * <p>
+ * This interface uses MapStruct to generate implementations for mapping between:
+ * <ul>
+ *     <li>{@link Order} and {@link ShowOrderResponse}</li>
+ *     <li>{@link CreateOrderRequest} and {@link Order}</li>
+ * </ul>
+ * </p>
+ *
+ * <p>
+ * This interface provides a singleton instance via {@link #INSTANCE}.
+ * </p>
  */
-public class OrderMapper {
+@Mapper
+public interface OrderMapper {
+    /**
+     * Singleton instance of the {@link OrderMapper}.
+     */
+    OrderMapper INSTANCE = Mappers.getMapper(OrderMapper.class);
 
     /**
-     * Converts a Car entity to a CarResponse object
+     * Converts an {@link Order} entity to a {@link ShowOrderResponse} DTO.
      *
-     * @param order The order entity to be converted
-     * @return A OrderResponse object containing the data from the Order entity
+     * @param order the {@link Order} entity to be converted
+     * @return the corresponding {@link ShowOrderResponse} DTO
      */
-    public ShowOrderResponse toOrderResponse(Order order) {
-        return new ShowOrderResponse(order.getId(), order.getUserId(), order.getCarId(), order.getInformation());
-    }
-
+    ShowOrderResponse toOrderResponse(Order order);
 
     /**
-     * Converts a CarRequest object to a Car entity
+     * Converts a {@link CreateOrderRequest} DTO to an {@link Order} entity.
      *
-     * @param createOrderRequest The orderRequest object to be converted
-     * @return A order entity containing the data from the orderRequest object
+     * @param createOrderRequest the {@link CreateOrderRequest} DTO to be converted
+     * @return the corresponding {@link Order} entity
      */
-
-    public Order toOrder(CreateOrderRequest createOrderRequest) {
-        return Order.builder()
-                .date(createOrderRequest.getDate())
-                .carId(createOrderRequest.getCarId())
-                .userId(createOrderRequest.getUserId())
-                .information(createOrderRequest.getInformation())
-                .status(createOrderRequest.getStatus())
-                .build();
-    }
- }
+    Order toOrder(CreateOrderRequest createOrderRequest);
+}

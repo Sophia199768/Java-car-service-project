@@ -1,11 +1,14 @@
 package org.example.service;
 
+import org.example.core.model.user.Role;
+import org.example.core.model.user.User;
 import org.example.core.order.Order;
 import org.example.core.responsesAndRequestes.order.CreateOrderRequest;
 import org.example.core.responsesAndRequestes.order.FilterOrderRequest;
 import org.example.core.responsesAndRequestes.order.ShowOrderResponse;
 import org.example.core.responsesAndRequestes.order.UpdateOrderRequest;
 import org.example.service.Exception.Exceptions;
+import org.example.service.auth.AuthContext;
 import org.example.service.mapper.OrderMapper;
 import org.example.service.repository.OrderRepository;
 import org.example.service.service.OrderService;
@@ -30,9 +33,6 @@ class OrderServiceTest {
     @Mock
     private OrderRepository orderRepository;
 
-    @Mock
-    private OrderMapper orderMapper;
-
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -43,7 +43,6 @@ class OrderServiceTest {
     void createOrder_shouldCreateOrder_whenRequestIsValid() throws Exceptions {
         CreateOrderRequest createOrderRequest = new CreateOrderRequest();
         Order order = new Order();
-        when(orderMapper.toOrder(createOrderRequest)).thenReturn(order);
 
         orderService.createOrder(createOrderRequest);
 
@@ -84,7 +83,11 @@ class OrderServiceTest {
         Order order = new Order();
         ShowOrderResponse showOrderResponse = new ShowOrderResponse();
         when(orderRepository.read()).thenReturn(Collections.singletonList(order));
-        when(orderMapper.toOrderResponse(order)).thenReturn(showOrderResponse);
+        User user = new User();
+        user.setRole(Role.ADMIN);
+
+        AuthContext.getInstance().setUser(user);
+
 
         List<ShowOrderResponse> showOrderResponses = orderService.read();
 
@@ -96,17 +99,21 @@ class OrderServiceTest {
     @Test
     @DisplayName("filter should return list of orders based on filter criteria")
     void filter_shouldReturnOrdersBasedOnCriteria() throws Exceptions {
-        Order order = Order.builder()
-                .status("status")
-                .carId(1)
-                .userId(1)
-                .date(null)
-                .build();
-        ShowOrderResponse showOrderResponse = new ShowOrderResponse();
-        when(orderRepository.read()).thenReturn(List.of(order));
-        when(orderMapper.toOrderResponse(order)).thenReturn(showOrderResponse);
+        Order order = new Order();
+        order.setStatus("status");
+        order.setCarId(1);
+        order.setUserId(1);
 
-        List<ShowOrderResponse> showOrderResponses = orderService.filter(new FilterOrderRequest(null, 1, "status", null));
+        FilterOrderRequest request = new FilterOrderRequest();
+        request.setStatus("status");
+        request.setCarId(1);
+
+        ShowOrderResponse showOrderResponse = OrderMapper.INSTANCE.toOrderResponse(order);
+
+
+        when(orderRepository.read()).thenReturn(List.of(order));
+
+        List<ShowOrderResponse> showOrderResponses = orderService.filter(request);
 
         assertEquals(1, showOrderResponses.size());
         assertEquals(showOrderResponse, showOrderResponses.get(0));

@@ -52,11 +52,10 @@ class UserRepositoryTest {
     @Test
     @DisplayName("create should add a new user to the repository")
     void create_shouldAddNewUserToRepository() throws Exceptions {
-        User user = User.builder()
-                .login("testLogin")
-                .password("1234")
-                .role(Role.ADMIN)
-                .build();
+        User user = new User();
+        user.setRole(Role.ADMIN);
+        user.setLogin("testLogin");
+        user.setPassword("1234");
 
         user = userRepository.create(user);
 
@@ -69,17 +68,15 @@ class UserRepositoryTest {
     @Test
     @DisplayName("read should return all users in the repository")
     void read_shouldReturnAllUsersInRepository() throws Exceptions {
-        User user1 = User.builder()
-                .login("testLogin")
-                .password("1234")
-                .role(Role.ADMIN)
-                .build();
+        User user1 = new User();
+        user1.setRole(Role.ADMIN);
+        user1.setLogin("testLogin");
+        user1.setPassword("1234");
 
-        User user2 = User.builder()
-                .login("testLogin")
-                .password("1234")
-                .role(Role.ADMIN)
-                .build();
+        User user2 = new User();
+        user2.setRole(Role.ADMIN);
+        user2.setLogin("testLogin");
+        user2.setPassword("1234");
 
         user1 = userRepository.create(user1);
         user2 = userRepository.create(user2);
@@ -94,11 +91,10 @@ class UserRepositoryTest {
     @DisplayName("update should modify an existing user in the repository")
     void update_shouldModifyExistingUserInRepository() throws Exceptions {
 
-        User user = User.builder()
-                .login("testLogin")
-                .password("1234")
-                .role(Role.ADMIN)
-                .build();
+        User user = new User();
+        user.setRole(Role.ADMIN);
+        user.setLogin("testLogin");
+        user.setPassword("1234");
 
         user = userRepository.create(user);
 
@@ -114,11 +110,10 @@ class UserRepositoryTest {
     @DisplayName("delete should remove a user from the repository")
     void delete_shouldRemoveUserFromRepository() throws Exceptions {
 
-        User user = User.builder()
-                .login("testLogin")
-                .password("1234")
-                .role(Role.ADMIN)
-                .build();
+        User user = new User();
+        user.setRole(Role.ADMIN);
+        user.setLogin("testLogin");
+        user.setPassword("1234");
 
         user = userRepository.create(user);
 

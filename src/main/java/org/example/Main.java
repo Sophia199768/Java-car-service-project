@@ -1,37 +1,13 @@
 package org.example;
 
-import org.example.application.ApplicationState;
-import org.example.application.factory.ParserFactory;
-import org.example.in.parser.Parser;
-import org.example.in.parser.command.Commandable;
-import org.example.service.service.AuditService;
-
-import java.sql.SQLException;
-import java.util.Scanner;
+import org.example.service.Exception.Exceptions;
 
 public class Main {
-    public static void main(String[] args) throws SQLException {
-        Scanner scanner = new Scanner(System.in);
-        Parser parser = ParserFactory.createParser();
-        ApplicationState state = new ApplicationState(new AuditService());
-
-        System.out.println("register or login");
+    public static void main(String[] args) throws Exceptions {
+        String test = "abba:1234";
 
 
-        while (true) {
-            String command = scanner.nextLine();
-
-            if (command.equals("exit")) break;
-
-            Commandable comm = parser.parse(command, state);
-
-            if (comm == null) continue;
-
-            try {
-                comm.execute(state);
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
-        }
+        System.out.println(test.substring(4));
     }
+
 }

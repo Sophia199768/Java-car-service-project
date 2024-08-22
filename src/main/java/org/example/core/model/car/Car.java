@@ -1,21 +1,66 @@
 package org.example.core.model.car;
 
-import lombok.*;
 
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * The Car class represents a car entity with attributes such as brand, model, release year, condition, and price.
  */
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class Car implements Cloneable {
+
+public class Car {
     /**
      * The unique identifier for the car.
      */
     private Integer id;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getCarBrand() {
+        return carBrand;
+    }
+
+    public void setCarBrand(String carBrand) {
+        this.carBrand = carBrand;
+    }
+
+    public String getCarModel() {
+        return carModel;
+    }
+
+    public void setCarModel(String carModel) {
+        this.carModel = carModel;
+    }
+
+    public Date getReleaseYear() {
+        return releaseYear;
+    }
+
+    public void setReleaseYear(Date releaseYear) {
+        this.releaseYear = releaseYear;
+    }
+
+    public String getCondition() {
+        return condition;
+    }
+
+    public void setCondition(String condition) {
+        this.condition = condition;
+    }
+
+    public Long getPrice() {
+        return price;
+    }
+
+    public void setPrice(Long price) {
+        this.price = price;
+    }
 
     /**
      * The brand of the car (e.g., Toyota, Ford).
@@ -48,11 +93,14 @@ public class Car implements Cloneable {
      * @return A Car object
      */
     @Override
-    public Car clone() {
-        try {
-            return (Car) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError();
-        }
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Car car)) return false;
+        return Objects.equals(getId(), car.getId()) && Objects.equals(getCarBrand(), car.getCarBrand()) && Objects.equals(getCarModel(), car.getCarModel()) && Objects.equals(getReleaseYear(), car.getReleaseYear()) && Objects.equals(getCondition(), car.getCondition()) && Objects.equals(getPrice(), car.getPrice());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getCarBrand(), getCarModel(), getReleaseYear(), getCondition(), getPrice());
     }
 }

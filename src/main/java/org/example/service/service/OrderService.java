@@ -1,12 +1,13 @@
 package org.example.service.service;
 
-import lombok.RequiredArgsConstructor;
+import org.example.core.model.user.Role;
 import org.example.core.order.Order;
 import org.example.core.responsesAndRequestes.order.CreateOrderRequest;
 import org.example.core.responsesAndRequestes.order.FilterOrderRequest;
 import org.example.core.responsesAndRequestes.order.ShowOrderResponse;
 import org.example.core.responsesAndRequestes.order.UpdateOrderRequest;
 import org.example.service.Exception.Exceptions;
+import org.example.service.auth.AuthContext;
 import org.example.service.mapper.OrderMapper;
 import org.example.service.repository.OrderRepository;
 
@@ -18,10 +19,12 @@ import java.util.stream.Collectors;
 /**
  * The OrderService class provides functionality for managing orders within the application.
  */
-@RequiredArgsConstructor
 public class OrderService {
     private final OrderRepository orderRepository;
-    private final OrderMapper orderMapper;
+
+    public OrderService(OrderRepository orderRepository) {
+        this.orderRepository = orderRepository;
+    }
 
 
     /**
@@ -63,7 +66,12 @@ public class OrderService {
         List<ShowOrderResponse> ordersResponses = new ArrayList<>();
 
         for (Order order : orders) {
-            ordersResponses.add(orderMapper.toOrderResponse(order));
+            ordersResponses.add(OrderMapper.INSTANCE.toOrderResponse(order));
+        }
+
+        if (AuthContext.getInstance().getUser().getRole().equals(Role.CLIENT)) {
+            ordersResponses = ordersResponses.stream()
+                    .filter(response -> response.getUserId().equals(AuthContext.getInstance().getUser().getId())).toList();
         }
 
         return ordersResponses;
@@ -84,7 +92,7 @@ public class OrderService {
             }
         }
 
-        orderRepository.create(orderMapper.toOrder(buyCarRequest));
+        orderRepository.create(OrderMapper.INSTANCE.toOrder(buyCarRequest));
     }
 
     /**
@@ -112,6 +120,6 @@ public class OrderService {
             answer = answer.stream().filter(order -> order.getCarId().equals(request.getCarId())).toList();
         }
 
-        return answer.stream().map(orderMapper::toOrderResponse).collect(Collectors.toList());
+        return answer.stream().map(OrderMapper.INSTANCE::toOrderResponse).collect(Collectors.toList());
     }
 }

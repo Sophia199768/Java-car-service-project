@@ -39,7 +39,7 @@ public class OrderRepository {
      * @param order The Order entity to be added.
      */
     public Order create(Order order) throws Exceptions {
-        String sql = OrderSql.UPDATE_ORDER;
+        String sql = OrderSql.INSERT_ORDER;
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setObject(1, order.getDate(), Types.TIMESTAMP);
             preparedStatement.setInt(2, order.getUserId());
@@ -76,13 +76,14 @@ public class OrderRepository {
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
            ResultSet resultSet = preparedStatement.executeQuery();
            while (resultSet.next()) {
-               Order order = Order.builder()
-                       .date(resultSet.getDate("date"))
-                       .userId(resultSet.getInt("user_id"))
-                       .carId(resultSet.getInt("car_id"))
-                       .status(resultSet.getString("status"))
-                       .information(resultSet.getString("information"))
-                       .build();
+
+               Order order = new Order();
+               order.setDate(resultSet.getDate("date"));
+               order.setUserId(resultSet.getInt("user_id"));
+               order.setCarId(resultSet.getInt("car_id"));
+               order.setStatus(resultSet.getString("status"));
+               order.setInformation(resultSet.getString("information"));
+
                orders.add(order);
            }
         } catch (SQLException sqlException) {

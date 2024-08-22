@@ -1,6 +1,5 @@
 package org.example.service.repository;
 
-import lombok.Getter;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,7 +12,7 @@ import java.util.Properties;
  * A configuration class responsible for loading database connection properties and establishing connections.
  * The properties are loaded from the `app.properties` file located in the classpath.
  */
-@Getter
+
 public class DataBaseConfig {
     private final String url;
     private final String username;
@@ -48,6 +47,7 @@ public class DataBaseConfig {
      * @throws ClassNotFoundException if the database driver class cannot be found.
      */
     public Connection getConnection() throws SQLException, ClassNotFoundException {
+        Class.forName("org.postgresql.Driver");
         return DriverManager.getConnection(url, username, password);
     }
 }

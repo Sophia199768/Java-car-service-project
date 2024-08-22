@@ -1,0 +1,20 @@
+GET http://localhost:8080/car
+Authorization: Bearer am9obi5kb2U6cGFzc3dvcmQxMjM=
+###
+
+DELETE http://localhost:8080/car?id=1
+###
+
+POST http://localhost:8080/car
+Content-Type: application/json
+Authorization: Bearer am9obi5kb2U6cGFzc3dvcmQxMjM=
+
+{
+  "carBrand": "Toyota",
+  "carModel": "Camry",
+  "releaseYear": "b",
+  "condition": "New",
+  "price": 30000
+}
+###
+

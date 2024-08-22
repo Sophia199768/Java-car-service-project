@@ -1,6 +1,5 @@
 package org.example.service.service;
 
-import lombok.RequiredArgsConstructor;
 import org.example.core.userAction.UserAction;
 
 
@@ -13,7 +12,7 @@ import java.util.List;
 /**
  * The AuditService class manages and records user actions within the application.
  */
-@RequiredArgsConstructor
+
 public class AuditService {
     private final List<UserAction> actions;
 
@@ -31,11 +30,10 @@ public class AuditService {
      * @param action The description of the action performed.
      */
     public void logAction(String user, String action) {
-        UserAction userAction = UserAction.builder()
-                .user(user)
-                .action(action)
-                .timestamp(LocalDateTime.now())
-                .build();
+        UserAction userAction = new UserAction();
+        userAction.setUser(user);
+        userAction.setAction(action);
+        userAction.setTimestamp(LocalDateTime.now());
 
         actions.add(userAction);
     }

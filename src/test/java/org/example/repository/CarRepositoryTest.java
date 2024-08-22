@@ -18,7 +18,6 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -58,12 +57,12 @@ class CarRepositoryTest {
     @Test
     @DisplayName("create should add a new car to the repository")
     void create_shouldAddNewCarToRepository() throws Exceptions {
-        Car car = Car.builder()
-                .carBrand("Toyota")
-                .carModel("Camry")
-                .condition("New")
-                .price(30000L)
-                .build();
+        Car car = new Car();
+        car.setId(1);
+        car.setCarBrand("Toyota");
+        car.setCarModel("Camry");
+        car.setPrice(30000L);
+        car.setCondition("New");
 
         car = carRepository.create(car);
 
@@ -76,22 +75,21 @@ class CarRepositoryTest {
     @Test
     @DisplayName("update should modify an existing car in the repository")
     void update_shouldModifyExistingCarInRepository() throws Exceptions {
-        Car car = Car.builder()
-                .carBrand("Toyota")
-                .carModel("Camry")
-                .condition("New")
-                .price(30000L)
-                .build();
+        Car car = new Car();
+        car.setId(1);
+        car.setCarBrand("Toyota");
+        car.setCarModel("Camry");
+        car.setPrice(30000L);
+        car.setCondition("New");
 
         carRepository.create(car);
 
-        Car updatedCar = Car.builder()
-                .id(1)
-                .carBrand("Toyota")
-                .carModel("Camry")
-                .condition("Used")
-                .price(28000L)
-                .build();
+        Car updatedCar = new Car();
+        updatedCar.setId(1);
+        updatedCar.setCarBrand("Toyota");
+        updatedCar.setCarModel("Camry");
+        updatedCar.setPrice(28000L);
+        updatedCar.setCondition("Used");
 
         carRepository.update(updatedCar);
 
@@ -103,19 +101,19 @@ class CarRepositoryTest {
     @Test
     @DisplayName("read should return all cars in the repository")
     void read_shouldReturnAllCarsInRepository() throws Exceptions {
-        Car car1 = Car.builder()
-                .carBrand("Toyota")
-                .carModel("Camry")
-                .condition("New")
-                .price(30000L)
-                .build();
+        Car car1 = new Car();
+        car1.setId(1);
+        car1.setCarBrand("Toyota");
+        car1.setCarModel("Camry");
+        car1.setPrice(30000L);
+        car1.setCondition("New");
 
-        Car car2 = Car.builder()
-                .carBrand("Honda")
-                .carModel("Accord")
-                .condition("Used")
-                .price(25000L)
-                .build();
+        Car car2 = new Car();
+        car2.setId(1);
+        car2.setCarBrand("Honda");
+        car2.setCarModel("Accord");
+        car2.setPrice(25000L);
+        car2.setCondition("Used");
 
         car1 = carRepository.create(car1);
         car2 = carRepository.create(car2);
@@ -129,13 +127,12 @@ class CarRepositoryTest {
     @Test
     @DisplayName("delete should remove a car from the repository")
     void delete_shouldRemoveCarFromRepository() throws Exceptions {
-        Car car = Car.builder()
-                .carBrand("Toyota")
-                .carModel("Camry")
-                .releaseYear(new Date(1))
-                .condition("New")
-                .price(30000L)
-                .build();
+        Car car = new Car();
+        car.setId(1);
+        car.setCarBrand("Toyota");
+        car.setCarModel("Camry");
+        car.setPrice(30000L);
+        car.setCondition("New");
 
         car = carRepository.create(car);
 

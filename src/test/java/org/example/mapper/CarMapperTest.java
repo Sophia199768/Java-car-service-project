@@ -16,18 +16,23 @@ class CarMapperTest {
     @Test
     @DisplayName("Should correctly map Car to ShowCarResponse")
     void toCarResponse_shouldReturnCorrectShowCarResponse_whenCarIsProvided() {
-        CarMapper mapper = new CarMapper();
-        Car newCar = Car.builder()
-                .id(1)
-                .carBrand("NewBrand")
-                .carModel("NewModel")
-                .releaseYear(new Date(1))
-                .price(20000L)
-                .condition("New")
-                .build();
+        Car newCar = new Car();
+        newCar.setId(1);
+        newCar.setCarBrand("NewBrand");
+        newCar.setCarModel("NewModel");
+        newCar.setReleaseYear(new Date(1));
+        newCar.setPrice(20000L);
+        newCar.setCondition("New");
 
-        ShowCarResponse expectedResponse = new ShowCarResponse(1, "NewBrand", "NewModel", new Date(1), "New", 20000L);
-        ShowCarResponse actualResponse = mapper.toCarResponse(newCar);
+        ShowCarResponse expectedResponse = new ShowCarResponse();
+        expectedResponse.setId(1);
+        expectedResponse.setCarBrand("NewBrand");
+        expectedResponse.setCarModel("NewModel");
+        expectedResponse.setReleaseYear(new Date(1));
+        expectedResponse.setCondition("New");
+        expectedResponse.setPrice(20000L);
+
+        ShowCarResponse actualResponse = CarMapper.INSTANCE.toCarResponse(newCar);
 
         assertEquals(expectedResponse, actualResponse);
     }
@@ -35,18 +40,22 @@ class CarMapperTest {
     @Test
     @DisplayName("Should correctly map CreateCarRequest to Car")
     void toCar_shouldReturnCorrectCar_whenCreateCarRequestIsProvided() {
-        CarMapper mapper = new CarMapper();
-        Car expectedCar = Car.builder()
-                .id(1)
-                .carBrand("NewBrand")
-                .carModel("NewModel")
-                .releaseYear(new Date(1))
-                .price(20000L)
-                .condition("New")
-                .build();
+        Car expectedCar = new Car();
+        expectedCar.setId(1);
+        expectedCar.setCarBrand("NewBrand");
+        expectedCar.setCarModel("NewModel");
+        expectedCar.setReleaseYear(new Date(1));
+        expectedCar.setPrice(20000L);
+        expectedCar.setCondition("New");
 
-        CreateCarRequest request = new CreateCarRequest("NewBrand", "NewModel", new Date(1), "New", 20000L);
-        Car actualCar = mapper.toCar(request);
+        CreateCarRequest request = new CreateCarRequest();
+        request.setCarBrand("NewBrand");
+        request.setCarModel("NewModel");
+        request.setReleaseYear(new Date(1));
+        request.setCondition("New");
+        request.setPrice(20000L);
+
+        Car actualCar = CarMapper.INSTANCE.toCar(request);
         actualCar.setId(1);
 
         assertEquals(expectedCar, actualCar);
