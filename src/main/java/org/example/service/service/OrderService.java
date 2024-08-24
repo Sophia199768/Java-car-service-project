@@ -1,15 +1,15 @@
 package org.example.service.service;
 
-import org.example.core.model.user.Role;
 import org.example.core.order.Order;
 import org.example.core.responsesAndRequestes.order.CreateOrderRequest;
 import org.example.core.responsesAndRequestes.order.FilterOrderRequest;
 import org.example.core.responsesAndRequestes.order.ShowOrderResponse;
 import org.example.core.responsesAndRequestes.order.UpdateOrderRequest;
 import org.example.service.Exception.Exceptions;
-import org.example.service.auth.AuthContext;
 import org.example.service.mapper.OrderMapper;
 import org.example.service.repository.OrderRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,9 +19,11 @@ import java.util.stream.Collectors;
 /**
  * The OrderService class provides functionality for managing orders within the application.
  */
+@Service
 public class OrderService {
     private final OrderRepository orderRepository;
 
+    @Autowired
     public OrderService(OrderRepository orderRepository) {
         this.orderRepository = orderRepository;
     }
@@ -67,11 +69,6 @@ public class OrderService {
 
         for (Order order : orders) {
             ordersResponses.add(OrderMapper.INSTANCE.toOrderResponse(order));
-        }
-
-        if (AuthContext.getInstance().getUser().getRole().equals(Role.CLIENT)) {
-            ordersResponses = ordersResponses.stream()
-                    .filter(response -> response.getUserId().equals(AuthContext.getInstance().getUser().getId())).toList();
         }
 
         return ordersResponses;

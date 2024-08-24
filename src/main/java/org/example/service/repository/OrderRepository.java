@@ -5,7 +5,9 @@ package org.example.service.repository;
 import org.example.core.order.Order;
 import org.example.service.Exception.Exceptions;
 import org.example.service.sql.OrderSql;
+import org.springframework.stereotype.Repository;
 
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,22 +16,12 @@ import java.util.List;
 /**
  * The OrderRepository class supports basic CRUD operations on the order collection.
  */
-
+@Repository
 public class OrderRepository {
+    private final DataSource source;
 
-    private final Connection connection;
-
-    public OrderRepository() {
-        try {
-            DataBaseConfig config = new DataBaseConfig();
-            connection = config.getConnection();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public OrderRepository(Connection connection) {
-        this.connection = connection;
+    public OrderRepository(DataSource source) {
+        this.source = source;
     }
 
     /**
@@ -40,7 +32,9 @@ public class OrderRepository {
      */
     public Order create(Order order) throws Exceptions {
         String sql = OrderSql.INSERT_ORDER;
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+        try (
+                Connection connection = source.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setObject(1, order.getDate(), Types.TIMESTAMP);
             preparedStatement.setInt(2, order.getUserId());
             preparedStatement.setInt(3, order.getCarId());
@@ -52,7 +46,9 @@ public class OrderRepository {
         }
 
 
-        try (Statement statement = connection.createStatement();
+        try (
+                Connection connection = source.getConnection();
+                Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery("SELECT last_value FROM objects.orders_order_id_seq")) {
             if (resultSet.next()) {
                 order.setId(resultSet.getInt(1));
@@ -73,7 +69,9 @@ public class OrderRepository {
     public List<Order> read() throws Exceptions {
         String sql = OrderSql.SELECT_ALL;
         List<Order> orders = new ArrayList<>();
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+        try (
+                Connection connection = source.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
            ResultSet resultSet = preparedStatement.executeQuery();
            while (resultSet.next()) {
 
@@ -101,7 +99,9 @@ public class OrderRepository {
      */
     public void update(Order order) throws Exceptions {
         String sql = OrderSql.UPDATE_ORDER;
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+        try (
+                Connection connection = source.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setObject(1, order.getDate(), Types.TIMESTAMP);
             preparedStatement.setInt(2, order.getUserId());
             preparedStatement.setInt(3, order.getCarId());
@@ -121,7 +121,9 @@ public class OrderRepository {
      */
     public void delete(Order order) throws Exceptions {
         String sql = OrderSql.DELETE_ORDER;
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+        try (
+                Connection connection = source.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, order.getId());
             preparedStatement.execute();
         } catch (SQLException sqlException) {

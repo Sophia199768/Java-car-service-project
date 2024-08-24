@@ -5,6 +5,8 @@ import org.example.core.responsesAndRequestes.user.*;
 import org.example.service.Exception.Exceptions;
 import org.example.service.mapper.UserMapper;
 import org.example.service.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 
 import java.util.ArrayList;
@@ -16,9 +18,11 @@ import java.util.stream.Collectors;
  * The UserService class provides functionality for managing users within the application.
  * It offers methods for user creation, login, role changes, and user retrieval, as well as filtering users based on criteria.
  */
+@Service
 public class UserService {
     private final UserRepository userRepository;
 
+    @Autowired
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
