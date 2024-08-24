@@ -59,7 +59,6 @@ public class SwaggerConfig {
      *
      * @return a GroupedOpenApi instance that includes all endpoints under "/order/**".
      */
-
     @Bean
     public GroupedOpenApi orderApi() {
         return GroupedOpenApi.builder()
