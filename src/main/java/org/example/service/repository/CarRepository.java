@@ -4,7 +4,9 @@ package org.example.service.repository;
 import org.example.core.model.car.Car;
 import org.example.service.Exception.Exceptions;
 import org.example.service.sql.CarSql;
+import org.springframework.stereotype.Repository;
 
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,21 +15,13 @@ import java.util.List;
 /**
  * The CarRepository class supports basic CRUD  operations on the car collection.
  */
+@Repository
 public class CarRepository {
 
-    private final Connection connection;
+    private final DataSource source;
 
-    public CarRepository() {
-        try {
-            DataBaseConfig config = new DataBaseConfig();
-            connection = config.getConnection();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public CarRepository(Connection connection) {
-        this.connection = connection;
+    public CarRepository(DataSource source) {
+        this.source = source;
     }
 
 
@@ -37,7 +31,9 @@ public class CarRepository {
      */
     public Car create(Car car) throws Exceptions {
         String sql = CarSql.INSERT_CAR;
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+        try (
+                Connection connection = source.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, car.getCarBrand());
             preparedStatement.setString(2, car.getCarModel());
             preparedStatement.setObject(3, car.getReleaseYear(), Types.TIMESTAMP);
@@ -49,7 +45,9 @@ public class CarRepository {
             throw new Exceptions("SQL Exception");
         }
 
-        try (Statement statement = connection.createStatement();
+        try (
+                Connection connection = source.getConnection();
+                Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery("SELECT last_value FROM objects.cars_car_id_seq")) {
             if (resultSet.next()) {
                 car.setId(resultSet.getInt(1));
@@ -71,7 +69,9 @@ public class CarRepository {
      */
     public void update(Car car) throws Exceptions {
         String sql = CarSql.UPDATE_CAR;
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+        try (
+                Connection connection = source.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, car.getCarBrand());
             preparedStatement.setString(2, car.getCarModel());
             preparedStatement.setObject(3, car.getReleaseYear(), Types.TIMESTAMP);
@@ -109,7 +109,9 @@ public class CarRepository {
     public List<Car> read() throws Exceptions {
         String sql = CarSql.SELECT_ALL;
         List<Car> cars = new ArrayList<>();
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+        try (
+                Connection connection = source.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
@@ -130,7 +132,9 @@ public class CarRepository {
      */
     public void delete(Car car) throws Exceptions {
         String sql = CarSql.DELETE_CAR;
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+        try (
+                Connection connection = source.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, car.getId());
             preparedStatement.execute();
         } catch (SQLException sqlException) {

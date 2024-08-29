@@ -1,14 +1,11 @@
 package org.example.service;
 
-import org.example.core.model.user.Role;
-import org.example.core.model.user.User;
 import org.example.core.order.Order;
 import org.example.core.responsesAndRequestes.order.CreateOrderRequest;
 import org.example.core.responsesAndRequestes.order.FilterOrderRequest;
 import org.example.core.responsesAndRequestes.order.ShowOrderResponse;
 import org.example.core.responsesAndRequestes.order.UpdateOrderRequest;
 import org.example.service.Exception.Exceptions;
-import org.example.service.auth.AuthContext;
 import org.example.service.mapper.OrderMapper;
 import org.example.service.repository.OrderRepository;
 import org.example.service.service.OrderService;
@@ -83,10 +80,6 @@ class OrderServiceTest {
         Order order = new Order();
         ShowOrderResponse showOrderResponse = new ShowOrderResponse();
         when(orderRepository.read()).thenReturn(Collections.singletonList(order));
-        User user = new User();
-        user.setRole(Role.ADMIN);
-
-        AuthContext.getInstance().setUser(user);
 
 
         List<ShowOrderResponse> showOrderResponses = orderService.read();

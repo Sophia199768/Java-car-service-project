@@ -6,7 +6,9 @@ import org.example.core.model.user.Role;
 import org.example.core.model.user.User;
 import org.example.service.Exception.Exceptions;
 import org.example.service.sql.UserSql;
+import org.springframework.stereotype.Repository;
 
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,21 +17,14 @@ import java.util.List;
 /**
  * The UserRepository class supports basic CRUD operations on the user collection.
  */
+@Repository
 public class UserRepository {
 
-    private final Connection connection;
+    private final DataSource source;
 
-    public UserRepository() {
-        try {
-            DataBaseConfig config = new DataBaseConfig();
-            connection = config.getConnection();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
 
-    public UserRepository(Connection connection) {
-        this.connection = connection;
+    public UserRepository(DataSource source) {
+        this.source = source;
     }
 
     /**
@@ -38,7 +33,9 @@ public class UserRepository {
      */
     public User create(User user) throws Exceptions {
         String sql = UserSql.INSERT_USER;
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+        try (
+                Connection connection = source.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, user.getLogin());
             preparedStatement.setString(2, String.valueOf(user.getRole()));
             preparedStatement.setString(3, user.getPassword());
@@ -50,7 +47,9 @@ public class UserRepository {
             throw new Exceptions("SQL Exception");
         }
 
-        try (Statement statement = connection.createStatement();
+        try (
+                Connection connection = source.getConnection();
+                Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery("SELECT last_value FROM objects.users_user_id_seq")) {
             if (resultSet.next()) {
                 user.setId(resultSet.getInt(1));
@@ -72,7 +71,9 @@ public class UserRepository {
     public List<User> read() throws Exceptions {
         String sql = UserSql.SELECT_ALL;
         List<User> users = new ArrayList<>();
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+        try (
+                Connection connection = source.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 User user = new User();
@@ -100,7 +101,9 @@ public class UserRepository {
      */
     public void update(User user) throws Exceptions {
         String sql = UserSql.UPDATE_USER;
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+        try (
+                Connection connection = source.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, user.getLogin());
             preparedStatement.setString(2, String.valueOf(user.getRole()));
             preparedStatement.setString(3, user.getPassword());
@@ -121,7 +124,9 @@ public class UserRepository {
      */
     public void delete(User user) throws Exceptions {
         String sql =  UserSql.DELETE_USER;
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+        try (
+                Connection connection = source.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, user.getId());
             preparedStatement.execute();
         } catch (SQLException sqlException) {

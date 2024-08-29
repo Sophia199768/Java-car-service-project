@@ -1,6 +1,5 @@
 package org.example.service.service;
 
-import org.example.annotations.Auditable;
 import org.example.annotations.Loggable;
 import org.example.core.model.car.Car;
 import org.example.core.responsesAndRequestes.car.CreateCarRequest;
@@ -10,6 +9,8 @@ import org.example.core.responsesAndRequestes.car.UpdateCarRequest;
 import org.example.service.Exception.Exceptions;
 import org.example.service.mapper.CarMapper;
 import org.example.service.repository.CarRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 
 import java.util.ArrayList;
@@ -20,9 +21,11 @@ import java.util.stream.Collectors;
  * The CarService class provides functionality for managing car data within the application.
  */
 @Loggable
+@Service
 public class CarService {
     private final CarRepository carRepository;
 
+    @Autowired
     public CarService(CarRepository carRepository) {
         this.carRepository = carRepository;
     }

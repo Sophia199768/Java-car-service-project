@@ -6,6 +6,7 @@ import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.example.core.model.user.User;
 import org.example.service.service.AuditService;
+import org.springframework.stereotype.Component;
 
 /**
  * Aspect for auditing actions within the application.
@@ -15,6 +16,7 @@ import org.example.service.service.AuditService;
  * </p>
  */
 @Aspect
+@Component
 public class AuditAspect {
 
     private final AuditService auditService = new AuditService();

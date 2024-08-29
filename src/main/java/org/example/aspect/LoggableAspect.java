@@ -4,6 +4,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.stereotype.Component;
 
 /**
  * Aspect for logging method execution details within the application.
@@ -14,6 +15,7 @@ import org.aspectj.lang.annotation.Pointcut;
  * </p>
  */
 @Aspect
+@Component
 public class LoggableAspect {
 
     /**
