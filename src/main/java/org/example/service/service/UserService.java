@@ -1,11 +1,11 @@
 package org.example.service.service;
 
+import lombok.RequiredArgsConstructor;
 import org.example.core.model.user.User;
 import org.example.core.responsesAndRequestes.user.*;
-import org.example.service.Exception.Exceptions;
+import org.example.service.exception.Exceptions;
 import org.example.service.mapper.UserMapper;
 import org.example.service.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
@@ -19,20 +19,16 @@ import java.util.stream.Collectors;
  * It offers methods for user creation, login, role changes, and user retrieval, as well as filtering users based on criteria.
  */
 @Service
+@RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
-
-    @Autowired
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     /**
      * Creates a new user based on the provided RegisterRequest.
      *
      * @throws Exceptions If the login is already used by another user.
      */
-    public void createUser(CreateUserRequest request) throws Exceptions {
+    public ShowUserResponse createUser(CreateUserRequest request) throws Exceptions {
         String newLogin = request.getLogin();
 
         List<User> users = userRepository.read();
@@ -43,7 +39,7 @@ public class UserService {
             }
         }
 
-        userRepository.create(UserMapper.INSTANCE.toUser(request));
+        return UserMapper.INSTANCE.toShowUserResponse(userRepository.create(UserMapper.INSTANCE.toUser(request)));
     }
 
     /**
@@ -71,13 +67,13 @@ public class UserService {
      * @param request The UpdateUserRequest object representing to update.
      * @throws Exceptions If there is no such user.
      */
-    public void updateUser(UpdateUserRequest request) throws Exceptions {
+    public ShowUserResponse updateUser(UpdateUserRequest request) throws Exceptions {
         User user = userRepository.read().stream().filter(it -> it.getId().equals(request.getId())).findFirst().orElse(null);
         if (user == null) {
             throw new Exceptions("There is no such user");
         }
 
-        userRepository.update(user);
+        return UserMapper.INSTANCE.toShowUserResponse(userRepository.update(user));
     }
 
     /**

@@ -25,7 +25,7 @@ databaseChangeLog:
                 type: VARCHAR(255)
             - column:
                 name: release_year
-                type: TIMESTAMP WITHOUT TIME ZONE
+                type: TIMESTAMP WITHOUT TIMEZONE
             - column:
                 name: condition
                 type: VARCHAR(255)

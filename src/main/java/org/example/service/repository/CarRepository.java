@@ -2,7 +2,7 @@ package org.example.service.repository;
 
 
 import org.example.core.model.car.Car;
-import org.example.service.Exception.Exceptions;
+import org.example.service.exception.Exceptions;
 import org.example.service.sql.CarSql;
 import org.springframework.stereotype.Repository;
 
@@ -67,7 +67,7 @@ public class CarRepository {
      *
      * @param car The Car entity with updated information.
      */
-    public void update(Car car) throws Exceptions {
+    public Car update(Car car) throws Exceptions {
         String sql = CarSql.UPDATE_CAR;
         try (
                 Connection connection = source.getConnection();
@@ -82,6 +82,8 @@ public class CarRepository {
         } catch (SQLException sqlException) {
             throw new Exceptions("SQL Exception");
         }
+
+        return car;
     }
 
 
@@ -95,7 +97,7 @@ public class CarRepository {
         car.setId(resultSet.getInt("car_id"));
         car.setCarBrand(resultSet.getString("car_brand"));
         car.setCarModel(resultSet.getString("car_model"));
-        car.setReleaseYear(resultSet.getDate("release_year"));
+        car.setReleaseYear(resultSet.getDate("release_year").toLocalDate());
         car.setCondition(resultSet.getString("condition"));
         car.setPrice(resultSet.getLong("price"));
         return car;

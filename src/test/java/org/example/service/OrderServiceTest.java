@@ -5,7 +5,7 @@ import org.example.core.responsesAndRequestes.order.CreateOrderRequest;
 import org.example.core.responsesAndRequestes.order.FilterOrderRequest;
 import org.example.core.responsesAndRequestes.order.ShowOrderResponse;
 import org.example.core.responsesAndRequestes.order.UpdateOrderRequest;
-import org.example.service.Exception.Exceptions;
+import org.example.service.exception.Exceptions;
 import org.example.service.mapper.OrderMapper;
 import org.example.service.repository.OrderRepository;
 import org.example.service.service.OrderService;
@@ -67,7 +67,6 @@ class OrderServiceTest {
         Order order = new Order();
         order.setId(1);
         when(orderRepository.read()).thenReturn(List.of(order));
-        doNothing().when(orderRepository).update(order);
 
         orderService.updateOrder(request);
 

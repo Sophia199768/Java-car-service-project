@@ -1,14 +1,14 @@
 package org.example.service.service;
 
+import lombok.RequiredArgsConstructor;
 import org.example.core.order.Order;
 import org.example.core.responsesAndRequestes.order.CreateOrderRequest;
 import org.example.core.responsesAndRequestes.order.FilterOrderRequest;
 import org.example.core.responsesAndRequestes.order.ShowOrderResponse;
 import org.example.core.responsesAndRequestes.order.UpdateOrderRequest;
-import org.example.service.Exception.Exceptions;
+import org.example.service.exception.Exceptions;
 import org.example.service.mapper.OrderMapper;
 import org.example.service.repository.OrderRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,13 +20,9 @@ import java.util.stream.Collectors;
  * The OrderService class provides functionality for managing orders within the application.
  */
 @Service
+@RequiredArgsConstructor
 public class OrderService {
     private final OrderRepository orderRepository;
-
-    @Autowired
-    public OrderService(OrderRepository orderRepository) {
-        this.orderRepository = orderRepository;
-    }
 
 
     /**
@@ -48,13 +44,13 @@ public class OrderService {
      * @param request The UpdateOrderRequest object representing to update.
      * @throws Exceptions If there is no such order.
      */
-    public void updateOrder(UpdateOrderRequest request) throws Exceptions {
+    public ShowOrderResponse updateOrder(UpdateOrderRequest request) throws Exceptions {
         Order order = orderRepository.read().stream().filter(it -> it.getId().equals(request.getId())).findFirst().orElse(null);
         if (order == null) {
             throw new Exceptions("There is no such order");
         }
 
-        orderRepository.update(order);
+        return OrderMapper.INSTANCE.toOrderResponse(orderRepository.update(order));
     }
 
     /**
@@ -80,7 +76,7 @@ public class OrderService {
      * @param buyCarRequest The OrderRequest object representing the purchase order.
      * @throws Exceptions If the car has already been bought.
      */
-    public void createOrder(CreateOrderRequest buyCarRequest) throws Exceptions {
+    public ShowOrderResponse createOrder(CreateOrderRequest buyCarRequest) throws Exceptions {
         List<Order> orders = orderRepository.read();
 
         for (Order order : orders) {
@@ -89,7 +85,7 @@ public class OrderService {
             }
         }
 
-        orderRepository.create(OrderMapper.INSTANCE.toOrder(buyCarRequest));
+        return OrderMapper.INSTANCE.toOrderResponse(orderRepository.create(OrderMapper.INSTANCE.toOrder(buyCarRequest)));
     }
 
     /**

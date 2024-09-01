@@ -7,7 +7,7 @@ import org.example.service.mapper.CarMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,7 +20,7 @@ class CarMapperTest {
         newCar.setId(1);
         newCar.setCarBrand("NewBrand");
         newCar.setCarModel("NewModel");
-        newCar.setReleaseYear(new Date(1));
+        newCar.setReleaseYear(LocalDate.now());
         newCar.setPrice(20000L);
         newCar.setCondition("New");
 
@@ -28,7 +28,7 @@ class CarMapperTest {
         expectedResponse.setId(1);
         expectedResponse.setCarBrand("NewBrand");
         expectedResponse.setCarModel("NewModel");
-        expectedResponse.setReleaseYear(new Date(1));
+        expectedResponse.setReleaseYear(LocalDate.now());
         expectedResponse.setCondition("New");
         expectedResponse.setPrice(20000L);
 
@@ -44,14 +44,14 @@ class CarMapperTest {
         expectedCar.setId(1);
         expectedCar.setCarBrand("NewBrand");
         expectedCar.setCarModel("NewModel");
-        expectedCar.setReleaseYear(new Date(1));
+        expectedCar.setReleaseYear(LocalDate.now());
         expectedCar.setPrice(20000L);
         expectedCar.setCondition("New");
 
         CreateCarRequest request = new CreateCarRequest();
         request.setCarBrand("NewBrand");
         request.setCarModel("NewModel");
-        request.setReleaseYear(new Date(1));
+        request.setReleaseYear(LocalDate.now());
         request.setCondition("New");
         request.setPrice(20000L);
 

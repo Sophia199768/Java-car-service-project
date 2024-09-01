@@ -7,6 +7,7 @@ import org.example.service.mapper.OrderMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -22,7 +23,7 @@ class OrderMapperTest {
         newOrder.setInformation("CarCreated");
         newOrder.setCarId(1);
         newOrder.setUserId(1);
-        newOrder.setDate(new Date(1));
+        newOrder.setDate(LocalDate.now());
 
         ShowOrderResponse expectedResponse = new ShowOrderResponse();
         expectedResponse.setId(1);
@@ -44,13 +45,13 @@ class OrderMapperTest {
         expectedOrder.setInformation("CarCreated");
         expectedOrder.setCarId(1);
         expectedOrder.setUserId(1);
-        expectedOrder.setDate(new Date(1));
+        expectedOrder.setDate(LocalDate.now());
 
         CreateOrderRequest request = new CreateOrderRequest();
         request.setCarId(1);
         request.setUserId(1);
         request.setStatus("Done");
-        request.setDate(new Date(1));
+        request.setDate(LocalDate.now());
         request.setInformation("CarCreated");
         Order actualOrder = OrderMapper.INSTANCE.toOrder(request);
         actualOrder.setId(1);

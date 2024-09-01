@@ -4,7 +4,7 @@ package org.example.service.repository;
 
 import org.example.core.model.user.Role;
 import org.example.core.model.user.User;
-import org.example.service.Exception.Exceptions;
+import org.example.service.exception.Exceptions;
 import org.example.service.sql.UserSql;
 import org.springframework.stereotype.Repository;
 
@@ -99,7 +99,7 @@ public class UserRepository {
      * Updates an existing User entity in the repository.
      * @param user The User entity with updated information.
      */
-    public void update(User user) throws Exceptions {
+    public User update(User user) throws Exceptions {
         String sql = UserSql.UPDATE_USER;
         try (
                 Connection connection = source.getConnection();
@@ -116,6 +116,8 @@ public class UserRepository {
         } catch (SQLException sqlException) {
             throw new Exceptions("SQL Exception");
         }
+
+        return user;
     }
 
     /**

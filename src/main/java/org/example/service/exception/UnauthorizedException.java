@@ -1,4 +1,4 @@
-package org.example.service.Exception;
+package org.example.service.exception;
 
 /**
  * Exception thrown when a user is not authorized to access a resource or perform an action.

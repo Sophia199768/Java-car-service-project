@@ -11,7 +11,7 @@ Content-Type: application/json
 {
   "carBrand": "Toyota",
   "carModel": "Camry",
-  "releaseYear": "b",
+  "releaseYear": "2020-01-01",
   "condition": "New",
   "price": 30000
 }

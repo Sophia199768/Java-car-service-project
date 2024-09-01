@@ -1,4 +1,4 @@
-package org.example.service.Exception;
+package org.example.service.exception;
 
 /**
  * Exception thrown when a user is denied permission to perform a certain action.

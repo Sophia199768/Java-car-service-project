@@ -1,4 +1,4 @@
-package org.example.annotations;
+package org.example.aspects.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -18,5 +18,5 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD, ElementType.TYPE})
-public @interface Loggable {
+public @interface EnableLoggable {
 }

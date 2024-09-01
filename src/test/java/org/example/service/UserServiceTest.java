@@ -3,7 +3,7 @@ package org.example.service;
 import org.example.core.model.user.Role;
 import org.example.core.model.user.User;
 import org.example.core.responsesAndRequestes.user.*;
-import org.example.service.Exception.Exceptions;
+import org.example.service.exception.Exceptions;
 import org.example.service.mapper.UserMapper;
 import org.example.service.repository.UserRepository;
 import org.example.service.service.UserService;
@@ -93,7 +93,6 @@ class UserServiceTest {
         user.setId(1);
 
         when(userRepository.read()).thenReturn(List.of(user));
-        doNothing().when(userRepository).update(user);
 
         userService.updateUser(request);
 

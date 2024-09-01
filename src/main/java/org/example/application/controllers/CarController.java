@@ -1,12 +1,12 @@
 package org.example.application.controllers;
 
+import lombok.RequiredArgsConstructor;
 import org.example.core.responsesAndRequestes.car.CreateCarRequest;
 import org.example.core.responsesAndRequestes.car.FilterCarRequest;
 import org.example.core.responsesAndRequestes.car.ShowCarResponse;
 import org.example.core.responsesAndRequestes.car.UpdateCarRequest;
-import org.example.service.Exception.Exceptions;
+import org.example.service.exception.Exceptions;
 import org.example.service.service.CarService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,18 +20,9 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/car")
+@RequiredArgsConstructor
 public class CarController {
     private final CarService carService;
-
-    /**
-     * Constructor with dependency injection.
-     *
-     * @param carService the service for handling car-related operations.
-     */
-    @Autowired
-    public CarController(CarService carService) {
-        this.carService = carService;
-    }
 
     /**
      * Creates a new car.
@@ -40,8 +31,8 @@ public class CarController {
      * @throws Exceptions if an error occurs during the car creation process.
      */
     @PostMapping
-    public void createCar(@RequestBody CreateCarRequest createCarRequest) throws Exceptions {
-        carService.createCar(createCarRequest);
+    public ResponseEntity<ShowCarResponse> createCar(@RequestBody CreateCarRequest createCarRequest) throws Exceptions {
+        return new ResponseEntity<>(carService.createCar(createCarRequest), HttpStatus.OK);
     }
 
     /**
@@ -51,8 +42,8 @@ public class CarController {
      * @throws Exceptions if an error occurs during the car update process.
      */
     @PutMapping
-    public void updateCar(@RequestBody UpdateCarRequest updateCarRequest) throws Exceptions {
-        carService.updateCar(updateCarRequest);
+    public ResponseEntity<ShowCarResponse> updateCar(@RequestBody UpdateCarRequest updateCarRequest) throws Exceptions {
+        return new ResponseEntity<>(carService.updateCar(updateCarRequest), HttpStatus.OK);
     }
 
     /**
