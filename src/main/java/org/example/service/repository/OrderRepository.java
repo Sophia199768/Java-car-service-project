@@ -3,7 +3,7 @@ package org.example.service.repository;
 
 
 import org.example.core.order.Order;
-import org.example.service.Exception.Exceptions;
+import org.example.service.exception.Exceptions;
 import org.example.service.sql.OrderSql;
 import org.springframework.stereotype.Repository;
 
@@ -76,7 +76,7 @@ public class OrderRepository {
            while (resultSet.next()) {
 
                Order order = new Order();
-               order.setDate(resultSet.getDate("date"));
+               order.setDate(resultSet.getDate("date").toLocalDate());
                order.setUserId(resultSet.getInt("user_id"));
                order.setCarId(resultSet.getInt("car_id"));
                order.setStatus(resultSet.getString("status"));
@@ -97,7 +97,7 @@ public class OrderRepository {
      *
      * @param order The Order entity with updated information.
      */
-    public void update(Order order) throws Exceptions {
+    public Order update(Order order) throws Exceptions {
         String sql = OrderSql.UPDATE_ORDER;
         try (
                 Connection connection = source.getConnection();
@@ -112,6 +112,8 @@ public class OrderRepository {
         } catch (SQLException sqlException) {
             throw new Exceptions("SQL Exception");
         }
+
+        return order;
     }
 
     /**

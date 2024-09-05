@@ -1,7 +1,9 @@
-package org.example.service.service;
+package org.example.aspects.auditService;
 
-import org.example.core.userAction.UserAction;
 
+
+import org.example.aspects.userAction.UserAction;
+import org.springframework.stereotype.Service;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -12,7 +14,7 @@ import java.util.List;
 /**
  * The AuditService class manages and records user actions within the application.
  */
-
+@Service
 public class AuditService {
     private final List<UserAction> actions;
 
@@ -26,12 +28,10 @@ public class AuditService {
     /**
      * Logs a user action by creating a new UserAction object and adding it to the list of actions.
      *
-     * @param user   The user who performed the action.
      * @param action The description of the action performed.
      */
-    public void logAction(String user, String action) {
+    public void logAction(String action) {
         UserAction userAction = new UserAction();
-        userAction.setUser(user);
         userAction.setAction(action);
         userAction.setTimestamp(LocalDateTime.now());
 

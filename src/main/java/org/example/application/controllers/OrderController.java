@@ -1,13 +1,13 @@
 package org.example.application.controllers;
 
+import lombok.RequiredArgsConstructor;
 import org.example.core.responsesAndRequestes.order.CreateOrderRequest;
 import org.example.core.responsesAndRequestes.order.FilterOrderRequest;
 import org.example.core.responsesAndRequestes.order.ShowOrderResponse;
 import org.example.core.responsesAndRequestes.order.UpdateOrderRequest;
-import org.example.service.Exception.Exceptions;
+import org.example.service.exception.Exceptions;
 import org.example.service.service.OrderService;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,18 +20,9 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/order")
+@RequiredArgsConstructor
 public class OrderController {
     private final OrderService orderService;
-
-    /**
-     * Constructor with dependency injection.
-     *
-     * @param orderService the service for handling order-related operations.
-     */
-    @Autowired
-    public OrderController(OrderService orderService) {
-        this.orderService = orderService;
-    }
 
     /**
      * Creates a new order.
@@ -40,8 +31,8 @@ public class OrderController {
      * @throws Exceptions if an error occurs during the order creation process.
      */
     @PostMapping("/create")
-    public void createOrder(@RequestBody CreateOrderRequest createOrderRequest) throws Exceptions {
-        orderService.createOrder(createOrderRequest);
+    public ResponseEntity<ShowOrderResponse> createOrder(@RequestBody CreateOrderRequest createOrderRequest) throws Exceptions {
+        return new ResponseEntity<>(orderService.createOrder(createOrderRequest), HttpStatus.OK);
     }
 
     /**
@@ -51,8 +42,8 @@ public class OrderController {
      * @throws Exceptions if an error occurs during the order update process.
      */
     @PutMapping
-    public void updateOrder(@RequestBody UpdateOrderRequest updateOrderRequest) throws Exceptions {
-        orderService.updateOrder(updateOrderRequest);
+    public ResponseEntity<ShowOrderResponse> updateOrder(@RequestBody UpdateOrderRequest updateOrderRequest) throws Exceptions {
+        return new ResponseEntity<>(orderService.updateOrder(updateOrderRequest), HttpStatus.OK);
     }
 
     /**

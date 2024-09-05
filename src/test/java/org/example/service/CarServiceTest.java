@@ -5,7 +5,7 @@ import org.example.core.responsesAndRequestes.car.CreateCarRequest;
 import org.example.core.responsesAndRequestes.car.FilterCarRequest;
 import org.example.core.responsesAndRequestes.car.ShowCarResponse;
 import org.example.core.responsesAndRequestes.car.UpdateCarRequest;
-import org.example.service.Exception.Exceptions;
+import org.example.service.exception.Exceptions;
 import org.example.service.mapper.CarMapper;
 import org.example.service.repository.CarRepository;
 import org.example.service.service.CarService;
@@ -17,7 +17,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -56,7 +55,6 @@ class CarServiceTest {
         car.setId(1);
 
         when(carRepository.read()).thenReturn(List.of(car));
-        doNothing().when(carRepository).update(car);
 
         carService.updateCar(request);
 

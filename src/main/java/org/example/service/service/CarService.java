@@ -1,15 +1,16 @@
 package org.example.service.service;
 
-import org.example.annotations.Loggable;
+
+import org.example.aspects.annotations.EnableLoggable;
+import lombok.RequiredArgsConstructor;
 import org.example.core.model.car.Car;
 import org.example.core.responsesAndRequestes.car.CreateCarRequest;
 import org.example.core.responsesAndRequestes.car.FilterCarRequest;
 import org.example.core.responsesAndRequestes.car.ShowCarResponse;
 import org.example.core.responsesAndRequestes.car.UpdateCarRequest;
-import org.example.service.Exception.Exceptions;
+import org.example.service.exception.Exceptions;
 import org.example.service.mapper.CarMapper;
 import org.example.service.repository.CarRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
@@ -20,23 +21,19 @@ import java.util.stream.Collectors;
 /**
  * The CarService class provides functionality for managing car data within the application.
  */
-@Loggable
+@EnableLoggable
 @Service
+@RequiredArgsConstructor
 public class CarService {
     private final CarRepository carRepository;
-
-    @Autowired
-    public CarService(CarRepository carRepository) {
-        this.carRepository = carRepository;
-    }
 
     /**
      * Creates a new car entry in the repository based on the provided CarRequest.
      *
      * @param car The CarRequest object containing car details to be created.
      */
-    public void createCar(CreateCarRequest car) throws Exceptions {
-        carRepository.create(CarMapper.INSTANCE.toCar(car));
+    public ShowCarResponse createCar(CreateCarRequest car) throws Exceptions {
+       return CarMapper.INSTANCE.toCarResponse(carRepository.create(CarMapper.INSTANCE.toCar(car)));
     }
 
 
@@ -46,14 +43,14 @@ public class CarService {
      * @param request The UpdateCarRequest object representing to update.
      * @throws Exceptions If there is no such car.
      */
-    public void updateCar(UpdateCarRequest request) throws Exceptions {
+    public ShowCarResponse updateCar(UpdateCarRequest request) throws Exceptions {
         Car car = carRepository.read().stream().filter(it -> it.getId().equals(request.getId())).findFirst().orElse(null);
 
         if (car == null) {
             throw new Exceptions("There is no such car");
         }
 
-        carRepository.update(car);
+        return CarMapper.INSTANCE.toCarResponse(carRepository.update(car));
     }
 
 

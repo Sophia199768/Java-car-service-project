@@ -1,4 +1,4 @@
-package org.example.aspect;
+package org.example.aspects.aspect;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -8,20 +8,15 @@ import org.springframework.stereotype.Component;
 
 /**
  * Aspect for logging method execution details within the application.
- * <p>
- * This aspect intercepts methods annotated with {@link org.example.annotations.Loggable}
- * and logs the method's execution time and details. The logging includes the method signature
- * and the duration of execution.
- * </p>
  */
 @Aspect
 @Component
 public class LoggableAspect {
 
     /**
-     * Pointcut that matches all methods within classes annotated with {@link org.example.annotations.Loggable}.
+     * Pointcut that matches all methods within classes annotated.
      */
-    @Pointcut("within(@org.example.annotations.Loggable *) && execution(* * (..))")
+    @Pointcut("within(@org.example.aspects.annotations.EnableLoggable *) && execution(* * (..))")
     public void annotatedByLoggable() {}
 
     /**

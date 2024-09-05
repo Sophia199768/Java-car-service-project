@@ -1,12 +1,12 @@
 package org.example.application.controllers;
 
+import lombok.RequiredArgsConstructor;
 import org.example.core.responsesAndRequestes.user.CreateUserRequest;
 import org.example.core.responsesAndRequestes.user.FilterUserRequest;
 import org.example.core.responsesAndRequestes.user.ShowUserResponse;
 import org.example.core.responsesAndRequestes.user.UpdateUserRequest;
-import org.example.service.Exception.Exceptions;
+import org.example.service.exception.Exceptions;
 import org.example.service.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -20,18 +20,9 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/user")
+@RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
-
-    /**
-     * Constructor with dependency injection.
-     *
-     * @param userService the service for handling user-related operations.
-     */
-    @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
 
     /**
      * Registers a new user.
@@ -40,8 +31,8 @@ public class UserController {
      * @throws Exceptions if an error occurs during user registration.
      */
     @PostMapping("/register")
-    public void registerUser(@RequestBody CreateUserRequest createUserRequest) throws Exceptions {
-        userService.createUser(createUserRequest);
+    public ResponseEntity<ShowUserResponse> registerUser(@RequestBody CreateUserRequest createUserRequest) throws Exceptions {
+        return new ResponseEntity<>(userService.createUser(createUserRequest), HttpStatus.OK);
     }
 
     /**
@@ -51,8 +42,8 @@ public class UserController {
      * @throws Exceptions if an error occurs during user update.
      */
     @PutMapping
-    public void updateUser(@RequestBody UpdateUserRequest updateUserRequest) throws Exceptions {
-        userService.updateUser(updateUserRequest);
+    public ResponseEntity<ShowUserResponse> updateUser(@RequestBody UpdateUserRequest updateUserRequest) throws Exceptions {
+        return new ResponseEntity<>(userService.updateUser(updateUserRequest), HttpStatus.OK);
     }
 
     /**

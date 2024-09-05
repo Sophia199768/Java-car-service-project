@@ -42,4 +42,6 @@ public interface CarMapper {
      * @return the corresponding {@link Car} entity
      */
     Car toCar(CreateCarRequest carRequest);
+
+
 }

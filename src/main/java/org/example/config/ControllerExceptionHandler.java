@@ -1,6 +1,6 @@
-package org.example.application.controllers;
+package org.example.config;
 
-import org.example.service.Exception.Exceptions;
+import org.example.service.exception.Exceptions;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
  */
 @ControllerAdvice
 public class ControllerExceptionHandler {
-
     /**
      * Handles custom application exceptions.
      *
